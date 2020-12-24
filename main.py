@@ -1,5 +1,11 @@
 import pygame
 
+# Сделать Класс Героя
+
+class Hero:
+    def __init__(self, name):
+        self.name = name
+
 
 class Enemy:
     def __init__(self):
