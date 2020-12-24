@@ -1,5 +1,7 @@
 import pygame
 import hero as h
+from Enemy import Enemy
+from Bullets import Bullet
 
 
 pygame.init()
@@ -11,6 +13,8 @@ evil_sprites = pygame.sprite.Group()
 good_sprites = pygame.sprite.Group()
 
 Hero = h.Hero(good_sprites)
+Enemy = Enemy('ship.png', True, evil_sprites)
+
 good_sprites.add(Hero)
 
 clock = pygame.time.Clock()
@@ -45,6 +49,10 @@ while running:
     y += (keys[pygame.K_s] - keys[pygame.K_w]) * .5
 
     Hero.update(x, y)
+    Enemy.update(screen)
+
+    evil_sprites.update(screen)
+    evil_sprites.draw(screen)
 
     good_sprites.draw(screen)
     pygame.display.flip()

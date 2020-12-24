@@ -1,10 +1,6 @@
 import pygame
 from load_methods import load_image
 
-pygame.init()
-screen = pygame.display.set_mode((500, 500))
-
-
 
 class Bullet(pygame.sprite.Sprite):     # Класс пули
 
@@ -25,7 +21,7 @@ class Bullet(pygame.sprite.Sprite):     # Класс пули
         self.mask = pygame.mask.from_surface(self.image)
         self.pos = pygame.Vector2(self.rect.center)
 
-    def update(self, events):
+    def update(self, screen):
 
         self.pos += self.naprevl * self.speed       # Движение пули
         self.rect.center = self.pos
