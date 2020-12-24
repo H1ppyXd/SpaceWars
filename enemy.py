@@ -47,11 +47,11 @@ class Enemy(pygame.sprite.Sprite):                              # Тестовы
             else:
                 self.rect.y -= self.speed
 
-            if not screen.get_rect().contains(self.rect):       # Проверка выхода за пределы экрана
-                if self.go_down_flag:
-                    self.go_down_flag = False
-                else:                                       # Изменение направления движения
-                    self.go_down_flag =True
+        if not screen.get_rect().contains(self.rect):       # Проверка выхода за пределы экрана
+            if self.go_down_flag:
+                self.go_down_flag = False
+            else:                                       # Изменение направления движения
+                self.go_down_flag = True
 
         else:
             self.rect.x -= self.speed

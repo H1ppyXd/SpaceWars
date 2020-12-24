@@ -48,7 +48,7 @@ while running:
     x += (keys[pygame.K_d] - keys[pygame.K_a]) * .5
     y += (keys[pygame.K_s] - keys[pygame.K_w]) * .5
 
-    Hero.update(x, y)
+    Hero.update(x, y, evil_sprites)
     Enemy.update(screen)
 
     evil_sprites.update(screen)
