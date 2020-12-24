@@ -1,6 +1,10 @@
 import pygame
 
-# Сделать Класс Героя
+
+class Enemy:
+    def __init__(self):
+        pass
+
 pygame.init()
 size = wigth, height = 800, 600
 screen = pygame.display.set_mode(size)
