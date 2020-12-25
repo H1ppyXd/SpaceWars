@@ -1,6 +1,6 @@
 import pygame
 from load_methods import load_image
-
+from sprite_groups import *
 
 class Bullet(pygame.sprite.Sprite):     # Класс пули
 
@@ -9,7 +9,7 @@ class Bullet(pygame.sprite.Sprite):     # Класс пули
 
     def __init__(self, name, center, naprevl, speed, *group, size=(0, 0)):
 
-        super().__init__(group)         # Добавление пули в группы
+        super().__init__(enemy_bullets)         # Добавление пули в группы
 
         self.naprevl = naprevl
         self.speed = speed

@@ -1,7 +1,7 @@
 import pygame
 import hero as h
 from Enemy import Enemy
-from Bullets import Bullet
+from sprite_groups import *
 
 
 pygame.init()
@@ -9,11 +9,9 @@ size = wigth, height = 1000, 800
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption('SpaceWars')
 
-evil_sprites = pygame.sprite.Group()
-good_sprites = pygame.sprite.Group()
 
 Hero = h.Hero(good_sprites)
-Enemy = Enemy('ship.png', True, evil_sprites)
+Enemy = Enemy('ship.png', True)
 
 good_sprites.add(Hero)
 
@@ -44,15 +42,16 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_q:
+                Enemy.flag_moving_left = False
     x += (keys[pygame.K_d] - keys[pygame.K_a]) * .5
     y += (keys[pygame.K_s] - keys[pygame.K_w]) * .5
 
-    Hero.update(x, y, evil_sprites)
+    Hero.update(x, y, enemy_bullets)
     Enemy.update(screen)
 
     evil_sprites.update(screen)
     evil_sprites.draw(screen)
-
     good_sprites.draw(screen)
     pygame.display.flip()

@@ -3,7 +3,7 @@ import load_methods
 
 
 class Hero(pygame.sprite.Sprite):
-    image = load_methods.load_image('Spaceshit.png')
+    image = load_methods.load_image('ship.png')
 
     def __init__(self, sprite_group, hp=3):
         super().__init__(sprite_group)
