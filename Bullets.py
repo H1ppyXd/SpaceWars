@@ -57,3 +57,9 @@ class Small_bullet(Bullet):
             self.kill()
         else:
             self.timer += 1
+
+class Bullet_wall(Bullet):
+    def update(self, screen):
+        super().update(screen)
+        if self.rect.x < 800:
+            self.kill()

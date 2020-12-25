@@ -3,7 +3,7 @@ import hero as h
 from Enemy import Enemy
 from sprite_groups import *
 from random import sample
-
+from Bullets import Bullet_wall
 
 pygame.init()
 size = wigth, height = 1000, 800
@@ -21,6 +21,7 @@ speed = 5
 x, y = 0, 0
 
 running = True
+wall_flag = True
 while running:
     clock.tick(75)
     keys = pygame.key.get_pressed()
@@ -50,7 +51,13 @@ while running:
     y += (keys[pygame.K_s] - keys[pygame.K_w]) * .5
 
     Hero.update(x, y, enemy_bullets)
-
+    if Hero.rect.x > 800 and wall_flag:
+        for el in range(-30, 800, 10):
+            Bullet_wall('crystal1.png', (950, el),
+                   pygame.Vector2(0, -1).rotate(-90).normalize(), 10, size=(30, 30))
+        wall_flag = False
+    elif not wall_flag and Hero.rect.x < 800:
+        wall_flag = True
     evil_sprites.update(screen)
     enemy_bullets.update(screen)
     evil_sprites.draw(screen)
