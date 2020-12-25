@@ -7,7 +7,7 @@ class Hero(pygame.sprite.Sprite):
 
     def __init__(self, sprite_group, hp=3):
         super().__init__(sprite_group)
-        Hero.image = pygame.transform.scale(Hero.image, (100, 50))
+        Hero.image = pygame.transform.scale(Hero.image, (50, 50))
         self.image = Hero.image
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
