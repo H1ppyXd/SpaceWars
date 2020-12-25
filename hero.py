@@ -3,11 +3,11 @@ import load_methods
 
 
 class Hero(pygame.sprite.Sprite):
-    image = load_methods.load_image('ship.png')
+    image = load_methods.load_image('Hero_ship.png')
 
     def __init__(self, sprite_group, hp=3):
         super().__init__(sprite_group)
-        Hero.image = pygame.transform.scale(Hero.image, (50, 50))
+        Hero.image = pygame.transform.scale(Hero.image, (75, 50))
         self.image = Hero.image
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)

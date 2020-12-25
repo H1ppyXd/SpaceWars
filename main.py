@@ -24,7 +24,7 @@ running = True
 while running:
     clock.tick(75)
     keys = pygame.key.get_pressed()
-    if (t == 300 and len(evil_sprites) <= 7) or len(evil_sprites) == 0:
+    if (t == 300 and len(evil_sprites) < 5) or len(evil_sprites) == 0:
         Enemy('ship.png', True, shooting_type=sample(['front_shot', 'triple_shot', 'five_shotes', 'giant_shot'], 1))
         t = 0
     else:
@@ -52,6 +52,8 @@ while running:
     Hero.update(x, y, enemy_bullets)
 
     evil_sprites.update(screen)
+    enemy_bullets.update(screen)
     evil_sprites.draw(screen)
+    enemy_bullets.draw(screen)
     good_sprites.draw(screen)
     pygame.display.flip()

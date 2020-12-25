@@ -1,6 +1,6 @@
 import pygame
 from load_methods import load_image
-from Bullets import Bullet
+from Bullets import *
 from sprite_groups import *
 from random import randrange
 
@@ -31,41 +31,26 @@ class Enemy(pygame.sprite.Sprite):                              # Тестовы
         self.cooldown_timer = 0               # Таймер перезарядки
 
     def front_shot(self):                                        # Создание пули
-        self.groups()[0].add(Bullet('crystal1.png', self.rect.center,
-                                    pygame.Vector2(0, -1).rotate(-self.angle).normalize(),
-                                    5, enemy_bullets, size=(30, 30)))
+        Bullet('crystal1.png', self.rect.center,
+               pygame.Vector2(0, -1).rotate(-self.angle).normalize(), 5, size=(40, 40))
 
     def triple_shot(self):
-        self.groups()[0].add(Bullet('crystal1.png', self.rect.center,
-                                    pygame.Vector2(0, -1).rotate(-self.angle).normalize(),
-                                    5, enemy_bullets, size=(40, 40)))
-        self.groups()[0].add(Bullet('crystal1.png', self.rect.center,
-                                    pygame.Vector2(1, -2).rotate(-self.angle).normalize(),
-                                    5, enemy_bullets, size=(30, 30)))
-        self.groups()[0].add(Bullet('crystal1.png', self.rect.center,
-                                    pygame.Vector2(-1, -2).rotate(-self.angle).normalize(),
-                                    5, enemy_bullets, size=(30, 30)))
+        self.front_shot()
+        Bullet('crystal1.png', self.rect.center,
+               pygame.Vector2(-1, -2).rotate(-self.angle).normalize(), 5, size=(30, 30))
+        Bullet('crystal1.png', self.rect.center,
+               pygame.Vector2(1, -2).rotate(-self.angle).normalize(), 5, size=(30, 30))
 
     def five_shotes(self):
-        self.groups()[0].add(Bullet('crystal1.png', self.rect.center,
-                                    pygame.Vector2(0, -1).rotate(-self.angle).normalize(),
-                                    5, enemy_bullets, size=(40, 40)))
-        self.groups()[0].add(Bullet('crystal1.png', self.rect.center,
-                                    pygame.Vector2(-1, -2).rotate(-self.angle).normalize(),
-                                    5, enemy_bullets, size=(30, 30)))
-        self.groups()[0].add(Bullet('crystal1.png', self.rect.center,
-                                    pygame.Vector2(1, -2).rotate(-self.angle).normalize(),
-                                    5, enemy_bullets, size=(30, 30)))
-        self.groups()[0].add(Bullet('crystal1.png', self.rect.center,
-                                    pygame.Vector2(-1, -4).rotate(-self.angle).normalize(),
-                                    5, enemy_bullets, size=(30, 30)))
-        self.groups()[0].add(Bullet('crystal1.png', self.rect.center,
-                                    pygame.Vector2(1, -4).rotate(-self.angle).normalize(),
-                                    5, enemy_bullets, size=(30, 30)))
+        self.triple_shot()
+        Bullet('crystal1.png', self.rect.center,
+               pygame.Vector2(-1, -4).rotate(-self.angle).normalize(), 5, size=(30, 30))
+        Bullet('crystal1.png', self.rect.center,
+               pygame.Vector2(1, -4).rotate(-self.angle).normalize(), 5, size=(30, 30))
+
     def giant_shot(self):
-        self.groups()[0].add(Bullet('crystal1.png', self.rect.center,
-                                    pygame.Vector2(0, -1).rotate(-self.angle).normalize(),
-                                    5, enemy_bullets, size=(90, 90)))
+        Giant_bullet('crystal1.png', self.rect.center, self.angle,
+               pygame.Vector2(0, -1).rotate(-self.angle).normalize(), 5, size=(90, 90))
 
     def update(self, screen):
 
