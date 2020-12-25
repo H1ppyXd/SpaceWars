@@ -4,9 +4,11 @@ from Bullets import *
 from sprite_groups import *
 from random import randrange
 
+
 class Enemy(pygame.sprite.Sprite):                              # Тестовый класс врага
 
-    # Передаваемые значения: название спрайта, группы спрайтов, скорость движения, размер спрайта, жизни, тип стрельбы, кулдаун.
+    # Передаваемые значения: название спрайта, группы спрайтов, скорость движения, размер спрайта, жизни,
+    # тип стрельбы, кулдаун.
     def __init__(self, name, flag_moving_left, speed=1, size=(0, 0), hp=3, shooting_type='front_shot', cooldown=210):
 
         super().__init__(evil_sprites)                     # Добавление спрайта в группы
