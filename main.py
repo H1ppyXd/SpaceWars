@@ -107,6 +107,7 @@ def game():
             x = (keys[pygame.K_d] * 5 - keys[pygame.K_a] * 5)
             y = (keys[pygame.K_s] * 5 - keys[pygame.K_w] * 5)
 
+
         if (t == 300 and len(evil_sprites) < 5) or len(evil_sprites) == 0:
             Enemy('ship.png', True, shooting_type=sample(['front_shot', 'triple_shot', 'five_shotes', 'giant_shot'], 1))
             t = 0
@@ -118,6 +119,9 @@ def game():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit(-1)
+            if keys[pygame.K_ESCAPE] == 1:
+                option()
+
 
         Hero.update(x, y, enemy_bullets)
         if Hero.rect.x > 800 and wall_flag:
