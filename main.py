@@ -8,6 +8,22 @@ from random import sample, choice
 from Bullets import Bullet, Bullet_wall
 
 
+def game_over():
+    pass
+
+
+def check_player_pos(x, y):
+    if Hero.rect.x > wigth:
+        x = -1
+    if Hero.rect.x < 0:
+        x = 1
+    if Hero.rect.y > height - 45:
+        y = -1
+    if Hero.rect.y < 0:
+        y = 1
+    return x, y
+
+
 def main_menu():
     manager = pygame_gui.UIManager(size)
 
@@ -107,8 +123,11 @@ def game():
         else:
             x = (keys[pygame.K_d] * 5 - keys[pygame.K_a] * 5)
             y = (keys[pygame.K_s] * 5 - keys[pygame.K_w] * 5)
-        # if keys[pygame.K_SPACE] != 0:
-        #     Hero.shot()
+
+        x, y = check_player_pos(x, y)
+
+        if keys[pygame.K_SPACE] != 0:
+            Hero.shot()
 
         if (t == 300 and len(evil_sprites) + len(snipers) < 5) or len(evil_sprites) + len(snipers) == 0:
             c = choice([0, 1])
@@ -130,8 +149,8 @@ def game():
             if keys[pygame.K_ESCAPE] == 1:
                 option()
 
-
         Hero.update(x, y, enemy_bullets)
+
         if Hero.rect.x > 750 and wall_flag:
             for el in range(-30, 750, 10):
                 Bullet_wall('crystal1.png', (950, el),
@@ -160,8 +179,7 @@ size = wigth, height = 1000, 800
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption('SpaceWars')
 Hero = h.Hero(good_sprites)
-f1 = pygame.font.SysFont('arial', 36)
-text_start = f1.render('Start', True, (180, 0, 0))
+
 good_sprites.add(Hero)
 clock = pygame.time.Clock()
 main_menu()

@@ -4,6 +4,7 @@ from Bullets import *
 from sprite_groups import *
 from random import randrange
 
+
 class Base_Enemy(pygame.sprite.Sprite):
 
     def __init__(self, name, flag_moving_left, group, speed=1, size=(0, 0), hp=3,
@@ -29,7 +30,6 @@ class Base_Enemy(pygame.sprite.Sprite):
         self.pos = pygame.Vector2(self.rect.center)
         self.cooldown = cooldown
         self.cooldown_timer = 0
-
 
     def update(self, screen):
         if not self.flag_moving_left:                          # Движение
