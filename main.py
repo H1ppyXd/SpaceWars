@@ -1,10 +1,11 @@
 import pygame_gui
+import pygame
 import hero as h
 
-from Enemy import Enemy
+from Enemy import *
 from sprite_groups import *
-from random import sample
-from Bullets import Bullet_wall
+from random import sample, choice
+from Bullets import Bullet, Bullet_wall
 
 
 def main_menu():
@@ -53,7 +54,7 @@ def option():
     manager = pygame_gui.UIManager(size)
     difficulty = pygame_gui.elements.ui_drop_down_menu.UIDropDownMenu(
         options_list=['Arcade movement', 'Realistic movement'],
-        starting_option='Realistic movement',
+        starting_option='Arcade movement',
         relative_rect=pygame.Rect((wigth // 2 - 100, height // 2 + 45), (200, 50)),
         manager=manager
     )
@@ -106,11 +107,18 @@ def game():
         else:
             x = (keys[pygame.K_d] * 5 - keys[pygame.K_a] * 5)
             y = (keys[pygame.K_s] * 5 - keys[pygame.K_w] * 5)
+        # if keys[pygame.K_SPACE] != 0:
+        #     Hero.shot()
 
-
-        if (t == 300 and len(evil_sprites) < 5) or len(evil_sprites) == 0:
-            Enemy('ship.png', True, shooting_type=sample(['front_shot', 'triple_shot', 'five_shotes', 'giant_shot'], 1))
+        if (t == 300 and len(evil_sprites) + len(snipers) < 5) or len(evil_sprites) + len(snipers) == 0:
+            c = choice([0, 1])
+            if c == 0:
+                Enemy('ship.png', True, evil_sprites,
+                      shooting_type=choice(['front_shot', 'triple_shot', 'five_shotes', 'giant_shot']))
+            else:
+                Sniper('ship.png', True, snipers, shooting_type=choice(['sniper_shot', 'cline_shot']))
             t = 0
+
         else:
             t += 1
 
@@ -124,18 +132,24 @@ def game():
 
 
         Hero.update(x, y, enemy_bullets)
-        if Hero.rect.x > 800 and wall_flag:
-            for el in range(-30, 800, 10):
+        if Hero.rect.x > 750 and wall_flag:
+            for el in range(-30, 750, 10):
                 Bullet_wall('crystal1.png', (950, el),
-                            pygame.Vector2(0, -1).rotate(-90).normalize(), 10, size=(30, 30))
+                            pygame.Vector2(-1, 0).normalize(), 10, enemy_bullets, size=(30, 30))
             wall_flag = False
-        elif not wall_flag and Hero.rect.x < 800:
+        elif not wall_flag and Hero.rect.x < 750:
             wall_flag = True
 
+        snipers.update(screen, Hero)
         evil_sprites.update(screen)
         enemy_bullets.update(screen)
+        hero_bullets.update(screen)
+
+        snipers.draw(screen)
         evil_sprites.draw(screen)
         enemy_bullets.draw(screen)
+        hero_bullets.draw(screen)
+
         good_sprites.draw(screen)
         pygame.display.flip()
 

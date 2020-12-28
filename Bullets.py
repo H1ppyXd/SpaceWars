@@ -7,9 +7,9 @@ class Bullet(pygame.sprite.Sprite):     # Класс пули
     # Переменные: название спрайта, центр пули (начальная точка), направление движения, скорость пули,
     # группы спрайтов, размер пули.
 
-    def __init__(self, name, center, naprevl, speed, size=(0, 0)):
+    def __init__(self, name, center, naprevl, speed, group, size=(0, 0)):
 
-        super().__init__(enemy_bullets)         # Добавление пули в группу
+        super().__init__(group)         # Добавление пули в группу
 
         self.naprevl = naprevl
         self.speed = speed
@@ -30,14 +30,14 @@ class Bullet(pygame.sprite.Sprite):     # Класс пули
             self.kill()
 
 class Giant_bullet(Bullet):
-    def __init__(self, name, center, angle, naprevl, speed, size=(0, 0)):
-        super().__init__(name, center, naprevl, speed, size)
+    def __init__(self, name, center, angle, naprevl, speed, group, size=(0, 0)):
+        super().__init__(name, center, naprevl, speed, group, size)
         self.angle = angle
         self.timer = 0
 
     def update(self, screen):
         super().update(screen)
-        if self.timer == 50:
+        if self.timer == 30:
             self.timer = 0
             Small_bullet('crystal1.png', self.rect.center,
                    pygame.Vector2(-1, -2).rotate(-self.angle).normalize(), 1, size=(20, 20))
@@ -48,7 +48,7 @@ class Giant_bullet(Bullet):
 
 class Small_bullet(Bullet):
     def __init__(self, name, center, naprevl, speed, size=(0, 0)):
-        super().__init__(name, center, naprevl, speed, size)
+        super().__init__(name, center, naprevl, speed, evil_sprites, size)
         self.timer = 0
 
     def update(self, screen):
