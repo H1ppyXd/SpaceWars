@@ -30,9 +30,8 @@ class Bullet(pygame.sprite.Sprite):     # Класс пули
             self.kill()
 
 class Giant_bullet(Bullet):
-    def __init__(self, name, center, angle, naprevl, speed, group, size=(0, 0)):
+    def __init__(self, name, center, naprevl, speed, group, size=(0, 0)):
         super().__init__(name, center, naprevl, speed, group, size)
-        self.angle = angle
         self.timer = 0
 
     def update(self, screen):
@@ -40,15 +39,15 @@ class Giant_bullet(Bullet):
         if self.timer == 30:
             self.timer = 0
             Small_bullet('crystal1.png', self.rect.center,
-                   pygame.Vector2(-1, -2).rotate(-self.angle).normalize(), 1, size=(20, 20))
+                   pygame.Vector2(-2, -1).normalize(), 1, enemy_bullets, size=(30, 30))
             Small_bullet('crystal1.png', self.rect.center,
-                   pygame.Vector2(1, -2).rotate(-self.angle).normalize(), 1, size=(20, 20))
+                   pygame.Vector2(-2, 1).normalize(), 1, enemy_bullets, size=(30, 30))
         else:
             self.timer += 1
 
 class Small_bullet(Bullet):
-    def __init__(self, name, center, naprevl, speed, size=(0, 0)):
-        super().__init__(name, center, naprevl, speed, evil_sprites, size)
+    def __init__(self, name, center, naprevl, speed, group, size=(0, 0)):
+        super().__init__(name, center, naprevl, speed, group, size)
         self.timer = 0
 
     def update(self, screen):
@@ -62,4 +61,27 @@ class Bullet_wall(Bullet):
     def update(self, screen):
         super().update(screen)
         if self.rect.x < 800:
+            self.kill()
+
+
+class Circle_bullet(Bullet):
+    def update(self, screen):
+        super().update(screen)
+        if self.rect.centerx == 400:
+            Bullet('crystal1.png', self.rect.center,
+                   pygame.Vector2(-1, 0).normalize(), 5, enemy_bullets, size=(30, 30))
+            Bullet('crystal1.png', self.rect.center,
+                   pygame.Vector2(1, 0).normalize(), 5, enemy_bullets, size=(30, 30))
+            Bullet('crystal1.png', self.rect.center,
+                   pygame.Vector2(0, 1).normalize(), 5, enemy_bullets, size=(30, 30))
+            Bullet('crystal1.png', self.rect.center,
+                   pygame.Vector2(0, -1).normalize(), 5, enemy_bullets, size=(30, 30))
+            Bullet('crystal1.png', self.rect.center,
+                   pygame.Vector2(-1, -1).normalize(), 5, enemy_bullets, size=(30, 30))
+            Bullet('crystal1.png', self.rect.center,
+                   pygame.Vector2(1, 1).normalize(), 5, enemy_bullets, size=(30, 30))
+            Bullet('crystal1.png', self.rect.center,
+                   pygame.Vector2(-1, 1).normalize(), 5, enemy_bullets, size=(30, 30))
+            Bullet('crystal1.png', self.rect.center,
+                   pygame.Vector2(1, -1).normalize(), 5, enemy_bullets, size=(30, 30))
             self.kill()

@@ -8,7 +8,7 @@ class Hero(pygame.sprite.Sprite):
 
     def __init__(self, sprite_group, hp=3):
         super().__init__(sprite_group)
-        Hero.image = pygame.transform.scale(Hero.image, (75, 50))
+        Hero.image = pygame.transform.scale(Hero.image, (80, 80))
         self.image = Hero.image
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
@@ -16,7 +16,7 @@ class Hero(pygame.sprite.Sprite):
         self.rect.y = 250
         self.hp = 0
 
-        self.cooldown = 100
+        self.cooldown = 50
         self.cooldown_timer = 50
 
     def shot(self):

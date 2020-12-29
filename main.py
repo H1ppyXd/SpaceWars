@@ -6,7 +6,7 @@ from Enemy import *
 from sprite_groups import *
 from random import sample, choice
 from Bullets import Bullet, Bullet_wall
-
+from Boss_1 import Boss_1
 
 def game_over():
     pass
@@ -90,7 +90,6 @@ def option():
                         movement = 0
                     else:
                         movement = 1
-                    print(movement)
             manager.process_events(event)
         manager.update(time_delta)
         manager.draw_ui(screen)
@@ -100,6 +99,7 @@ def option():
 def game():
     global movement
     t = 300
+    t_flag = True
     x, y = 0, 0
     wall_flag = True
     running = True
@@ -130,16 +130,20 @@ def game():
             Hero.shot()
 
         if (t == 300 and len(evil_sprites) + len(snipers) < 5) or len(evil_sprites) + len(snipers) == 0:
-            c = choice([0, 1])
+            c = choice([2])
             if c == 0:
+                Sniper('ship.png', True, snipers, shooting_type=choice(['sniper_shot', 'cline_shot']))
+            elif c == 2:
+                t_flag = False
+                evil_sprites.empty()
+                Boss = Boss_1()
+            else:
                 Enemy('ship.png', True, evil_sprites,
                       shooting_type=choice(['front_shot', 'triple_shot', 'five_shotes', 'giant_shot']))
-            else:
-                Sniper('ship.png', True, snipers, shooting_type=choice(['sniper_shot', 'cline_shot']))
             t = 0
-
         else:
-            t += 1
+            if t != 300 and t_flag:
+                t += 1
 
         screen.fill(pygame.Color('black'))
 
