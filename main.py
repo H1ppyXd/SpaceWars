@@ -25,7 +25,7 @@ class Dot:
         return self.x, self.y
 
 
-data = [Dot(random.randint(0, 1200), random.randint(0, 800)) for i in range(100)]
+data = [Dot(random.randint(0, 1200), random.randint(0, 800)) for i in range(50)]
 
 
 def game_over():
