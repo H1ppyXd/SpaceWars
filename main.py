@@ -4,6 +4,7 @@ import hero as h
 import math
 import random
 
+import flags
 from Enemy import *
 from sprite_groups import *
 from random import sample, choice
@@ -150,18 +151,20 @@ def option():
 def game():
     global movement
     t = 300
+    global_timer = 0
     t_flag = True
     x, y = 0, 0
     wall_flag = True
     running = True
     while running:
+        now_boss_flag = flags.now_boss_flag
         clock.tick(75)
         keys = pygame.key.get_pressed()
         if movement == 0:
             x = (keys[pygame.K_d] * 5 - keys[pygame.K_a] * 5)
             y = (keys[pygame.K_s] * 5 - keys[pygame.K_w] * 5)
             x, y = check_player_pos(x, y)
-            Hero.update(x, y, enemy_bullets, screen)
+            Hero.update(x, y, screen)
 
         if movement == 1:
             if keys[pygame.K_d] == 0 and keys[pygame.K_a] == 0:
@@ -179,7 +182,7 @@ def game():
             x += (keys[pygame.K_d] - keys[pygame.K_a]) * .5
             y += (keys[pygame.K_s] - keys[pygame.K_w]) * .5
             x, y = check_player_pos(x, y)
-            Hero.update(x, y, enemy_bullets, screen)
+            Hero.update(x, y, screen)
 
         if movement == 2:
             sin_a = math.sin(Hero.angle)
@@ -202,21 +205,26 @@ def game():
         if keys[pygame.K_SPACE] != 0:
             Hero.shot()
 
-        if (t == 300 and len(evil_sprites) + len(snipers) < 5) or len(evil_sprites) + len(snipers) == 0:
-            c = choice([2])
-            if c == 0:
-                Sniper('ship.png', True, snipers, shooting_type=choice(['sniper_shot', 'cline_shot']))
-            elif c == 2:
-                t_flag = False
+        if not now_boss_flag:
+            if global_timer == 1000:
+                flags.now_boss_flag = True
                 evil_sprites.empty()
-                Boss = Boss_1()
+                snipers.empty()
+                enemy_bullets.empty()
+                Boss_1()
+                global_timer = 0
+            elif (t == 300 and len(evil_sprites) + len(snipers) < 5) or len(evil_sprites) + len(snipers) == 0:
+                c = choice([0, 1])
+                if c == 0:
+                    Sniper('ship.png', True, snipers, shooting_type=choice(['sniper_shot', 'cline_shot']))
+                else:
+                    Enemy('ship.png', True, evil_sprites,
+                          shooting_type=choice(['front_shot', 'triple_shot', 'five_shotes', 'giant_shot']))
+                t = 0
             else:
-                Enemy('ship.png', True, evil_sprites,
-                      shooting_type=choice(['front_shot', 'triple_shot', 'five_shotes', 'giant_shot']))
-            t = 0
-        else:
-            if t != 300 and t_flag:
                 t += 1
+                global_timer += 1
+
 
         screen.fill(pygame.Color('black'))
 
@@ -243,14 +251,17 @@ def game():
         evil_sprites.update(screen)
         enemy_bullets.update(screen)
         hero_bullets.update(screen)
+        boss_sprite.update(screen)
+        boss_bullets.update(screen, 0)
 
         #  Чтобы убрать фон в игре закомментируй это
         background()
-
+        boss_bullets.draw(screen)
         snipers.draw(screen)
-        evil_sprites.draw(screen)
         enemy_bullets.draw(screen)
         hero_bullets.draw(screen)
+        evil_sprites.draw(screen)
+        boss_sprite.draw(screen)
         good_sprites.draw(screen)
 
 
