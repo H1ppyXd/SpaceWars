@@ -57,7 +57,6 @@ class Base_Enemy(pygame.sprite.Sprite):
 
 
 class Enemy(Base_Enemy):
-
     def front_shot(self):                                        # Создание пули
         Bullet('crystal1.png', self.rect.center,
                pygame.Vector2(0, -1).rotate(-self.angle).normalize(), 5, enemy_bullets, size=(40, 40))
