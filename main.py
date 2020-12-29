@@ -227,8 +227,9 @@ def game():
                 option()
 
         if movement == 2:
-            pygame.draw.line(screen, pygame.Color(255, 0, 0), (Hero.rect.centerx, Hero.rect.centery),
-                             (Hero.rect.centerx + 800, Hero.rect.centery))
+            pygame.draw.line(screen, pygame.Color(255, 0, 0), (Hero.rect.centerx, Hero.rect.centery - 5),
+                             (Hero.rect.centerx + 800 * math.cos(Hero.angle),
+                              Hero.rect.centery + 800 * math.sin(Hero.angle) - 5))
 
         if Hero.rect.x > 750 and wall_flag:
             for el in range(-30, 750, 10):
