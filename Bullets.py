@@ -17,6 +17,8 @@ class Bullet(pygame.sprite.Sprite):     # Класс пули
         self.speed = speed
 
         self.image = load_image(name)
+        self.size = size
+        self.center = center
         if size != (0, 0):
             self.image = pygame.transform.scale(self.image, size)                               # Создание спрайта
         self.rect = self.image.get_rect(center=center)
@@ -41,10 +43,10 @@ class Giant_bullet(Bullet):
         super().update(screen)
         if self.timer == 30:
             self.timer = 0
-            Small_bullet('crystal1.png', self.rect.center,
-                   pygame.Vector2(-2, -1).normalize(), 1, enemy_bullets, size=(30, 30))
-            Small_bullet('crystal1.png', self.rect.center,
-                   pygame.Vector2(-2, 1).normalize(), 1, enemy_bullets, size=(30, 30))
+            Small_bullet('enemy_bullet.png', self.rect.center,
+                   pygame.Vector2(-2, -1).normalize(), 1, enemy_bullets, size=(25, 25))
+            Small_bullet('enemy_bullet.png', self.rect.center,
+                   pygame.Vector2(-2, 1).normalize(), 1, enemy_bullets, size=(25, 25))
         else:
             self.timer += 1
 
@@ -59,10 +61,10 @@ class Super_bullet(Bullet):
         if self.timer == 70:
             self.timer = 0
             s = self.rect.centerx - 50
-            S_Giant_bullet('crystal1.png', self.rect.center,
-                         pygame.Vector2(-1, -1).normalize(), 1, enemy_bullets, size=(30, 30))
-            S_Giant_bullet('crystal1.png', self.rect.center,
-                         pygame.Vector2(-1, 1).normalize(), 1, enemy_bullets, size=(30, 30))
+            S_Giant_bullet('enemy_bullet.png', self.rect.center,
+                         pygame.Vector2(-1, -1).normalize(), 1, enemy_bullets, size=(25, 25))
+            S_Giant_bullet('enemy_bullet.png', self.rect.center,
+                         pygame.Vector2(-1, 1).normalize(), 1, enemy_bullets, size=(25, 25))
 
         else:
             self.timer += 1
@@ -76,13 +78,13 @@ class S_Giant_bullet(Bullet):
         super().update(screen)
         if self.timer == 70:
             self.timer = 0
-            Small_bullet('crystal1.png', self.rect.center,
+            Small_bullet('enemy_bullet.png', self.rect.center,
                    pygame.Vector2(1, -0.5).normalize(), 1, enemy_bullets, size=(20, 20), timer_to=240)
-            Small_bullet('crystal1.png', self.rect.center,
+            Small_bullet('enemy_bullet.png', self.rect.center,
                    pygame.Vector2(1, 0.5).normalize(), 1, enemy_bullets, size=(20, 20), timer_to=240)
-            Small_bullet('crystal1.png', self.rect.center,
+            Small_bullet('enemy_bullet.png', self.rect.center,
                    pygame.Vector2(0, -1).normalize(), 1, enemy_bullets, size=(20, 20), timer_to=150)
-            Small_bullet('crystal1.png', self.rect.center,
+            Small_bullet('enemy_bullet.png', self.rect.center,
                    pygame.Vector2(0, -1).normalize(), 1, enemy_bullets, size=(20, 20), timer_to=150)
         else:
             self.timer += 1
@@ -116,22 +118,22 @@ class Circle_bullet(Bullet):
     def update(self, screen):
         super().update(screen)
         if self.rect.centerx == self.x:
-            Bullet('crystal1.png', self.rect.center,
-                   pygame.Vector2(-1, 0).normalize(), 5, enemy_bullets, size=(30, 30))
-            Bullet('crystal1.png', self.rect.center,
-                   pygame.Vector2(1, 0).normalize(), 5, enemy_bullets, size=(30, 30))
-            Bullet('crystal1.png', self.rect.center,
-                   pygame.Vector2(0, 1).normalize(), 5, enemy_bullets, size=(30, 30))
-            Bullet('crystal1.png', self.rect.center,
-                   pygame.Vector2(0, -1).normalize(), 5, enemy_bullets, size=(30, 30))
-            Bullet('crystal1.png', self.rect.center,
-                   pygame.Vector2(-1, -1).normalize(), 5, enemy_bullets, size=(30, 30))
-            Bullet('crystal1.png', self.rect.center,
-                   pygame.Vector2(1, 1).normalize(), 5, enemy_bullets, size=(30, 30))
-            Bullet('crystal1.png', self.rect.center,
-                   pygame.Vector2(-1, 1).normalize(), 5, enemy_bullets, size=(30, 30))
-            Bullet('crystal1.png', self.rect.center,
-                   pygame.Vector2(1, -1).normalize(), 5, enemy_bullets, size=(30, 30))
+            Bullet('enemy_bullet.png', self.rect.center,
+                   pygame.Vector2(-1, 0).normalize(), 5, enemy_bullets, size=(25, 25))
+            Bullet('enemy_bullet.png', self.rect.center,
+                   pygame.Vector2(1, 0).normalize(), 5, enemy_bullets, size=(25, 25))
+            Bullet('enemy_bullet.png', self.rect.center,
+                   pygame.Vector2(0, 1).normalize(), 5, enemy_bullets, size=(25, 25))
+            Bullet('enemy_bullet.png', self.rect.center,
+                   pygame.Vector2(0, -1).normalize(), 5, enemy_bullets, size=(25, 25))
+            Bullet('enemy_bullet.png', self.rect.center,
+                   pygame.Vector2(-1, -1).normalize(), 5, enemy_bullets, size=(25, 25))
+            Bullet('enemy_bullet.png', self.rect.center,
+                   pygame.Vector2(1, 1).normalize(), 5, enemy_bullets, size=(25, 25))
+            Bullet('enemy_bullet.png', self.rect.center,
+                   pygame.Vector2(-1, 1).normalize(), 5, enemy_bullets, size=(25, 25))
+            Bullet('enemy_bullet.png', self.rect.center,
+                   pygame.Vector2(1, -1).normalize(), 5, enemy_bullets, size=(25, 25))
             self.kill()
 
 
@@ -141,9 +143,11 @@ class Freeze_bullets(Bullet):
         self.freeze = False
 
     def update(self, screen, x):
+
         if x == 0:
             if not self.freeze:
                 super().update(screen)
+
         elif x == 1:
             vx, vy = randrange(-10, 11), randrange(-10, 11)
             if vx == vy == 0:
@@ -151,5 +155,17 @@ class Freeze_bullets(Bullet):
             self.naprevl = pygame.Vector2(vx, vy).normalize()
             self.speed = randrange(3, 7)
             self.freeze = True
+
+            self.image = load_image('frozen_bullet.png')
+            if self.size != (0, 0):
+                self.image = pygame.transform.scale(self.image, self.size)  # Создание спрайта
+            self.mask = pygame.mask.from_surface(self.image)
+
         elif x == 2:
+
+            self.image = load_image('enemy_bullet.png')
+            if self.size != (0, 0):
+                self.image = pygame.transform.scale(self.image, self.size)  # Создание спрайта
+            self.mask = pygame.mask.from_surface(self.image)
+
             self.freeze = False

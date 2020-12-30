@@ -3,7 +3,7 @@ import load_methods
 from Bullets import Bullet
 import math
 from sprite_groups import *
-
+import globals
 
 class Hero(pygame.sprite.Sprite):
     image = load_methods.load_image('Hero.png')
@@ -21,20 +21,31 @@ class Hero(pygame.sprite.Sprite):
         self.dx = 0
         self.dy = 0
         self.hp = hp
-        self.cooldown = 5
-        self.cooldown_timer = 5
+        self.cooldown = globals.hero_cooldown
+        self.cooldown_timer = 50
         self.inv = False
         self.inv_timer = -1
 
     def shot(self):
         if self.cooldown_timer == self.cooldown:
-            Bullet('crystal1.png', self.rect.center,
-                 pygame.Vector2(1, 0).normalize(), 5, hero_bullets, size=(40, 40))
+            Bullet('hero_bullet.png', self.rect.center,
+                 pygame.Vector2(1, 0).normalize(), 5, hero_bullets, size=(25, 25))
+            self.cooldown_timer = 0
+
+    def shot_by_line(self):
+        if self.cooldown_timer == self.cooldown:
+            Bullet('hero_bullet.png', self.rect.center,
+                   pygame.Vector2((self.rect.centerx + 800 * math.cos(self.angle)) - self.rect.centerx,
+                                  (self.rect.centery + 800 * math.sin(self.angle))- self.rect.centery).normalize(),
+                   7, hero_bullets, size=(25, 25))
             self.cooldown_timer = 0
 
     def update(self, x, y, screen):
-        if self.cooldown_timer != self.cooldown:
+        self.cooldown = globals.hero_cooldown
+        if self.cooldown_timer < self.cooldown:
             self.cooldown_timer += 1
+        elif self.cooldown_timer > self.cooldown:
+            self.cooldown_timer = self.cooldown
         self.rect.x += x
         self.rect.y += y
 
@@ -45,6 +56,8 @@ class Hero(pygame.sprite.Sprite):
                     self.inv = True
                     self.inv_timer = 0
                     bullet.kill()
+                    if group == evil_sprites:
+                        globals.enemy_kill()
         for bullet in boss_sprite:
             if pygame.sprite.collide_mask(self, bullet) and not self.inv:
                 self.hp -= 1
@@ -52,7 +65,7 @@ class Hero(pygame.sprite.Sprite):
                 self.inv_timer = 0
         if self.hp <= 0:
             self.kill()
-        if self.inv_timer == 30:
+        if self.inv_timer == 50:
             self.inv = False
             self.inv_timer = -1
         elif self.inv_timer != -1:

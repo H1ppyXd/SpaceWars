@@ -4,7 +4,7 @@ import hero as h
 import math
 import random
 
-import flags
+import globals
 from Enemy import *
 from sprite_groups import *
 from random import sample, choice
@@ -115,11 +115,16 @@ def main_menu():
 
 
 def option():
-    global movement
     manager = pygame_gui.UIManager(size)
+    if globals.movement == 0:
+        st_op = 'Arcade movement'
+    elif globals.movement == 1:
+        st_op = 'Realistic movement'
+    elif globals.movement == 2:
+        st_op = 'Simulation movement'
     difficulty = pygame_gui.elements.ui_drop_down_menu.UIDropDownMenu(
         options_list=['Arcade movement', 'Realistic movement', 'Simulation movement'],
-        starting_option='Arcade movement',
+        starting_option=st_op,
         relative_rect=pygame.Rect((wigth // 2 - 100, height // 2 + 45), (200, 50)),
         manager=manager
     )
@@ -136,12 +141,11 @@ def option():
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_DROP_DOWN_MENU_CHANGED:
                     if event.text == 'Arcade movement':
-                        movement = 0
+                        globals.nem_movement(0)
                     elif event.text == 'Realistic movement':
-                        movement = 1
+                        globals.nem_movement(1)
                     else:
-                        movement = 2
-                    print(movement)
+                        globals.nem_movement(2)
             manager.process_events(event)
         manager.update(time_delta)
         manager.draw_ui(screen)
@@ -149,7 +153,6 @@ def option():
 
 
 def game():
-    global movement
     t = 300
     global_timer = 0
     t_flag = True
@@ -157,7 +160,8 @@ def game():
     wall_flag = True
     running = True
     while running:
-        now_boss_flag = flags.now_boss_flag
+        movement = globals.movement
+        now_boss_flag = globals.now_boss_flag
         clock.tick(75)
         keys = pygame.key.get_pressed()
         if movement == 0:
@@ -201,25 +205,31 @@ def game():
             Hero.rect.y += Hero.dy
             pygame.display.flip()
             x, y = check_player_pos(x, y)
+            Hero.update(x, y, screen)
 
         if keys[pygame.K_SPACE] != 0:
-            Hero.shot()
+            if globals.movement == 2:
+                Hero.shot_by_line()
+            else:
+                Hero.shot()
 
         if not now_boss_flag:
-            if global_timer == 1000:
-                flags.now_boss_flag = True
+            if global_timer == 100:
+                globals.now_boss_flag = True
                 evil_sprites.empty()
                 snipers.empty()
                 enemy_bullets.empty()
                 Boss_1()
                 global_timer = 0
             elif (t == 300 and len(evil_sprites) + len(snipers) < 5) or len(evil_sprites) + len(snipers) == 0:
-                c = choice([0, 1])
+                c = choice([0, 1, 2, 3])
                 if c == 0:
                     Sniper('ship.png', True, snipers, shooting_type=choice(['sniper_shot', 'cline_shot']))
                 else:
                     Enemy('ship.png', True, evil_sprites,
                           shooting_type=choice(['front_shot', 'triple_shot', 'five_shotes', 'giant_shot']))
+                t = 0
+            elif t == 300:
                 t = 0
             else:
                 t += 1
@@ -270,7 +280,7 @@ def game():
 
 
 pygame.init()
-movement = 0
+movement = globals.movement
 size = wigth, height = 1000, 800
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption('SpaceWars')

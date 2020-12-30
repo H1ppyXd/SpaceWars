@@ -2,6 +2,7 @@ import pygame
 from load_methods import load_image
 from Bullets import *
 from sprite_groups import *
+import globals
 from random import randrange, choice
 
 
@@ -54,30 +55,31 @@ class Base_Enemy(pygame.sprite.Sprite):
                 bullet.kill()
             if self.hp == 0:
                 self.kill()
+                globals.enemy_kill()
 
 
 class Enemy(Base_Enemy):
     def front_shot(self):                                        # Создание пули
-        Bullet('crystal1.png', self.rect.center,
-               pygame.Vector2(-1, 0).normalize(), 5, enemy_bullets, size=(40, 40))
+        Bullet('enemy_bullet.png', self.rect.center,
+               pygame.Vector2(-1, 0).normalize(), 5, enemy_bullets, size=(25, 25))
 
     def triple_shot(self):
         self.front_shot()
-        Bullet('crystal1.png', self.rect.center,
-               pygame.Vector2(-2, -1).normalize(), 5, enemy_bullets, size=(30, 30))
-        Bullet('crystal1.png', self.rect.center,
-               pygame.Vector2(-2, 1).normalize(), 5, enemy_bullets, size=(30, 30))
+        Bullet('enemy_bullet.png', self.rect.center,
+               pygame.Vector2(-2, -1).normalize(), 5, enemy_bullets, size=(25, 25))
+        Bullet('enemy_bullet.png', self.rect.center,
+               pygame.Vector2(-2, 1).normalize(), 5, enemy_bullets, size=(25, 25))
 
     def five_shotes(self):
         self.triple_shot()
-        Bullet('crystal1.png', self.rect.center,
-               pygame.Vector2(-2, 2).normalize(), 5, enemy_bullets, size=(30, 30))
-        Bullet('crystal1.png', self.rect.center,
-               pygame.Vector2(-2, -2).normalize(), 5, enemy_bullets, size=(30, 30))
+        Bullet('enemy_bullet.png', self.rect.center,
+               pygame.Vector2(-2, 2).normalize(), 5, enemy_bullets, size=(25, 25))
+        Bullet('enemy_bullet.png', self.rect.center,
+               pygame.Vector2(-2, -2).normalize(), 5, enemy_bullets, size=(25, 25))
 
     def giant_shot(self):
-        Giant_bullet('crystal1.png', self.rect.center,
-               pygame.Vector2(-1, 0).normalize(), 3, enemy_bullets, size=(90, 90))
+        Giant_bullet('enemy_bullet.png', self.rect.center,
+               pygame.Vector2(-1, 0).normalize(), 3, enemy_bullets, size=(70, 70))
 
     def update(self, screen):
         super().update(screen)        # Выстрел/перезарядка
@@ -97,24 +99,24 @@ class Enemy(Base_Enemy):
 
 class Sniper(Base_Enemy):
     def sniper_shot(self, Hero):
-        Bullet('crystal1.png', self.rect.center,
+        Bullet('enemy_bullet.png', self.rect.center,
                 pygame.Vector2(Hero.centerx - self.rect.centerx,
-                                Hero.centery - self.rect.centery).normalize(), 7, enemy_bullets, size=(30, 30))
+                                Hero.centery - self.rect.centery).normalize(), 7, enemy_bullets, size=(15, 15))
 
     def cline_shot(self, Hero):
         self.sniper_shot(Hero)
-        Bullet('crystal1.png', (self.rect.centerx + 10, self.rect.centery + 10),
+        Bullet('enemy_bullet.png', (self.rect.centerx + 10, self.rect.centery + 10),
                 pygame.Vector2(Hero.centerx - self.rect.centerx + 10,
-                                Hero.centery - self.rect.centery + 10).normalize(), 7, enemy_bullets, size=(30, 30))
-        Bullet('crystal1.png', (self.rect.centerx + 10, self.rect.centery - 10),
+                                Hero.centery - self.rect.centery + 10).normalize(), 7, enemy_bullets, size=(15, 15))
+        Bullet('enemy_bullet.png', (self.rect.centerx + 10, self.rect.centery - 10),
                 pygame.Vector2(Hero.centerx - self.rect.centerx - 10,
-                                Hero.centery - self.rect.centery - 10).normalize(), 7, enemy_bullets, size=(30, 30))
-        Bullet('crystal1.png', (self.rect.centerx + 20, self.rect.centery + 20),
+                                Hero.centery - self.rect.centery - 10).normalize(), 7, enemy_bullets, size=(15, 15))
+        Bullet('enemy_bullet.png', (self.rect.centerx + 20, self.rect.centery + 20),
                 pygame.Vector2(Hero.centerx - self.rect.centerx + 20,
-                                Hero.centery - self.rect.centery + 20).normalize(), 7, enemy_bullets, size=(30, 30))
-        Bullet('crystal1.png', (self.rect.centerx + 20, self.rect.centery - 20),
+                                Hero.centery - self.rect.centery + 20).normalize(), 7, enemy_bullets, size=(15, 15))
+        Bullet('enemy_bullet.png', (self.rect.centerx + 20, self.rect.centery - 20),
                 pygame.Vector2(Hero.centerx - self.rect.centerx - 20,
-                                Hero.centery - self.rect.centery - 20).normalize(), 7, enemy_bullets, size=(30, 30))
+                                Hero.centery - self.rect.centery - 20).normalize(), 7, enemy_bullets, size=(15, 15))
 
     def update(self, screen, hero):
         super().update(screen)
