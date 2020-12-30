@@ -10,6 +10,7 @@ from sprite_groups import *
 from random import sample, choice
 from Bullets import Bullet, Bullet_wall
 from Boss_1 import Boss_1
+from Boss_2 import Boss_2
 
 class Dot:
     def __init__(self, x, y):
@@ -214,12 +215,12 @@ def game():
                 Hero.shot()
 
         if not now_boss_flag:
-            if global_timer == 10000:
+            if global_timer == 100:
                 globals.now_boss_flag = True
                 evil_sprites.empty()
                 snipers.empty()
                 enemy_bullets.empty()
-                Boss_1()
+                Boss_2()
                 global_timer = 0
             elif (t == 300 and len(evil_sprites) + len(snipers) < 5) or len(evil_sprites) + len(snipers) == 0:
                 c = choice([0, 1, 2, 3])
