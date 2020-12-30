@@ -25,5 +25,5 @@ def nem_movement(x):
     elif x == 2:
         movement = 2
 
-hero_cooldown = 3
+hero_cooldown = 50
 enemys_killed = 0

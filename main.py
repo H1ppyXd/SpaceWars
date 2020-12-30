@@ -214,7 +214,7 @@ def game():
                 Hero.shot()
 
         if not now_boss_flag:
-            if global_timer == 100:
+            if global_timer == 10000:
                 globals.now_boss_flag = True
                 evil_sprites.empty()
                 snipers.empty()

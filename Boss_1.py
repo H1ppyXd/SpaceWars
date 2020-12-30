@@ -8,7 +8,7 @@ import globals
 class Boss_1(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__(boss_sprite)
-        self.hp = 200
+        self.hp = 500
         self.image = load_image('boss_1.png')
         self.rect = self.image.get_rect()
         self.rect.x = 800
