@@ -8,7 +8,7 @@ import globals
 class Hero(pygame.sprite.Sprite):
     image = load_methods.load_image('Hero.png')
 
-    def __init__(self, sprite_group, hp=3):
+    def __init__(self, sprite_group, hp=5):
         super().__init__(sprite_group)
         Hero.image = pygame.transform.scale(Hero.image, (100, 100))
         self.image = Hero.image
@@ -49,22 +49,39 @@ class Hero(pygame.sprite.Sprite):
         self.rect.x += x
         self.rect.y += y
 
-        for group in [enemy_bullets, snipers, evil_sprites, boss_bullets]:
-            for bullet in group:
-                if pygame.sprite.collide_mask(self, bullet) and not self.inv:
-                    self.hp -= 1
-                    self.inv = True
-                    self.inv_timer = 0
-                    bullet.kill()
-                    if group == evil_sprites:
-                        globals.enemy_kill()
+        #for bullet in wall_bullets:
+        #    if pygame.sprite.collide_mask(self, bullet) and not self.inv:
+        #        self.hp -= 1
+        #       globals.enemys_killed -= 20
+        #        self.inv = True
+        #        self.rect.center = (400, 400)
+        #        self.inv_timer = 40
+        for bullet in bullet_wall:
+            if pygame.sprite.collide_mask(self, bullet) and not self.inv:
+                self.hp -= 1
+                #globals.enemys_killed -= 20   <--- Штраф за смерть
+                self.inv = True
+                self.rect.x -= 110
+                self.inv_timer = 40
+
         for bullet in boss_sprite:
             if pygame.sprite.collide_mask(self, bullet) and not self.inv:
                 self.hp -= 1
+                #globals.enemys_killed -= 20   <--- Штраф за смерть
                 self.inv = True
                 self.inv_timer = 0
+        for group in [enemy_bullets, snipers, evil_sprites, boss_bullets]:  # <--- guided_bullet, stop_bullets
+            for bullet in group:
+                if pygame.sprite.collide_mask(self, bullet) and not self.inv:
+                    self.hp -= 1
+                    #globals.enemys_killed -= 20   <--- Штраф за смерть
+                    self.inv = True
+                    self.inv_timer = 0
+                    bullet.kill()
+
         if self.hp <= 0:
             self.kill()
+            #guided_bullet.empty()
         if self.inv_timer == 50:
             self.inv = False
             self.inv_timer = -1

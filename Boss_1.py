@@ -13,7 +13,6 @@ class Boss_1(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = 800
         self.atcs = ['20_shots', 'circle_bullet', 'bullet_wall', 'up_down']
-        self.special = ['bullet_freeze', 'bullet_tree']
         self.now_atc = ''
         self.cooldown = 250
 
@@ -145,7 +144,13 @@ class Boss_1(pygame.sprite.Sprite):
         if self.freeze_timer != -1:
             self.freeze_timer += 1
 
+
         if self.deaf_timer == 1300:
             globals.now_boss_flag = False
+        # Добавление новых врагов
+        #    globals.snipers.append('sniper_shot')
+        #    globals.snipers.remove(globals.snipers[0])
+        #    globals.enemys.append('five_shotes')
+        #    globals.enemys.remove(globals.enemys[0])
             self.kill()
-
+            globals.flag += 1

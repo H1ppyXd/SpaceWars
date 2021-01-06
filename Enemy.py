@@ -98,6 +98,12 @@ class Enemy(Base_Enemy):
 
 
 class Sniper(Base_Enemy):
+    # Новый вид стрельбы
+    #def shot(self, Hero):
+    #    Bullet('enemy_bullet.png', self.rect.center,
+    #            pygame.Vector2(Hero.centerx - self.rect.centerx,
+    #                            Hero.centery - self.rect.centery).normalize(), 7, enemy_bullets, size=(15, 15))
+
     def sniper_shot(self, Hero):
         Bullet('enemy_bullet.png', self.rect.center,
                 pygame.Vector2(Hero.centerx - self.rect.centerx,
@@ -121,7 +127,11 @@ class Sniper(Base_Enemy):
     def update(self, screen, hero):
         super().update(screen)
         self.cooldown_timer += 1
-        if self.shooting_type == 'sniper_shot':
+        if self.shooting_type == 'shot':
+            if self.cooldown_timer == self.cooldown:
+                self.sniper_shot(hero.rect)
+                self.cooldown_timer = -1
+        elif self.shooting_type == 'sniper_shot':
             if self.cooldown_timer == self.cooldown:
                 self.sniper_shot(hero.rect)
             elif self.cooldown_timer == self.cooldown + 3 or self.cooldown_timer == self.cooldown + 6 or\

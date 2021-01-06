@@ -1,10 +1,20 @@
 now_boss_flag = False
 movement = 0
 
+flag = 1
+# Флаг и счетчик для "телепортации"
+#teleportation = -1
+#tp_flag = True
+
+enemys = ['front_shot', 'triple_shot']
+snipers = ['shot']
+
+
 def enemy_kill():
     global hero_cooldown, enemys_killed
-    enemys_killed += 1
-    if enemys_killed >= 45:
+    if enemys_killed != 45:
+        enemys_killed += 1
+    if enemys_killed == 45:
         hero_cooldown = 15
 
     elif enemys_killed >= 35:
@@ -15,6 +25,12 @@ def enemy_kill():
 
     elif enemys_killed >= 15:
         hero_cooldown = 45
+
+    elif enemys_killed < 15:
+        hero_cooldown = 50
+
+    if enemys_killed < 0:
+        enemys_killed = 0
 
 def nem_movement(x):
     global movement

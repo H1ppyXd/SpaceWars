@@ -169,3 +169,37 @@ class Freeze_bullets(Bullet):
             self.mask = pygame.mask.from_surface(self.image)
 
             self.freeze = False
+
+# Новые классы пуль
+"""
+class Guided_bullet(Bullet):
+    def update(self, screen, hero):
+        self.naprevl = pygame.Vector2(-self.rect.centerx + hero.rect.centerx,
+                                      -self.rect.centery + hero.rect.centery).normalize()
+        super().update(screen)
+
+
+class Stop_Bullet(Bullet):
+    def __init__(self, name, center, naprevl, speed, group, size=(0, 0), time=49, flag=True):
+        super().__init__(name, center, naprevl, speed, group, size)
+        self.stop_timer = 0
+        self.time = time
+        self.flag = flag
+
+    def update(self, screen, hero):
+        if self.stop_timer == self.time:
+            if self.flag:
+                self.naprevl = pygame.Vector2(hero.rect.centerx - self.rect.centerx,
+                                              hero.rect.centery - self.rect.centery).normalize()
+            self.stop_timer += 1
+        elif self.stop_timer == self.time + 1:
+            super().update(screen)
+        else:
+            self.stop_timer += 1
+
+class Wall_bullet(Stop_Bullet):
+    def update(self, screen):
+        if self.stop_timer == self.time:
+            self.kill()
+        else:
+            self.stop_timer += 1"""
