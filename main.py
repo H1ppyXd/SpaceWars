@@ -102,11 +102,58 @@ def main_menu():
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == start_button:
-                        game()
+                        select_lvl()
                     if event.ui_element == options:
                         option()
                     if event.ui_element == exit_btn:
                         exit(-1)
+            manager.process_events(event)
+        background()
+        manager.update(time_delta)
+        manager.draw_ui(screen)
+        screen.blit(text1, (wigth // 2 - 130, 100))
+        pygame.display.flip()
+
+
+def select_lvl():
+    manager = pygame_gui.UIManager(size)
+
+    f1 = pygame.font.Font(None, 72)
+    text1 = f1.render('Select Level', True,
+                      (255, 255, 255))
+
+    first_lvl = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect((wigth // 2 - 175, height // 2), (100, 100)),
+        text='1',
+        manager=manager
+    )
+
+    second_lvl = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect((wigth // 2 - 75, height // 2), (100, 100)),
+        text='2',
+        manager=manager
+    )
+
+    infinity_lvl = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect((wigth // 2 + 25, height // 2), (100, 100)),
+        text='infinity',
+        manager=manager
+    )
+
+    while True:
+        screen.fill(pygame.Color('black'))
+        time_delta = clock.tick(75) / 1000.0
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                exit(-1)
+            if event.type == pygame.USEREVENT:
+                if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                    if event.ui_element == first_lvl:
+                        game(1)
+                    if event.ui_element == second_lvl:
+                        game(2)
+                    if event.ui_element == infinity_lvl:
+                        game(3)
             manager.process_events(event)
         background()
         manager.update(time_delta)
@@ -153,7 +200,7 @@ def option():
         pygame.display.flip()
 
 
-def game():
+def game(lvl):
     t = 300
     global_timer = 0
     x, y = 0, 0
@@ -214,34 +261,41 @@ def game():
                 else:
                     Hero.shot()
 
-            if not now_boss_flag:
-                if global_timer == 100 or globals.enemys_killed == 50:
-                    globals.now_boss_flag = True
-                    evil_sprites.empty()
-                    snipers.empty()
-                    enemy_bullets.empty()
-                    # Запуск "Телепортации"
-                    # globals.tp_flag = True
-                    # globals.teleportation = 0
-                    if globals.flag == 0:
-                        Boss_1()
-                    # Подгрузка второго босса
-                    # elif globals.flag == 1:
-                    #     Boss_2(Hero)
-                    global_timer = 0
-                elif (t == 300 and len(evil_sprites) + len(snipers) < 5) or len(evil_sprites) + len(snipers) == 0:
-                    c = choice([0, 1, 2, 3])
-                    if c == 0:
-                        Sniper('ship.png', True, snipers, shooting_type=choice(globals.snipers))
+            if lvl == 1:
+                print('1 level')
+
+            if lvl == 2:
+                print('2 level')
+
+            if lvl == 3:
+                print('3 level')
+                """if not now_boss_flag:
+                    if global_timer == 100 or globals.enemys_killed == 50:
+                        globals.now_boss_flag = True
+                        evil_sprites.empty()
+                        snipers.empty()
+                        enemy_bullets.empty()
+                        globals.tp_flag = True
+                        globals.teleportation = 0
+                        if globals.flag == 0:
+                            Boss_1()
+                        # Подгрузка второго босса
+                        elif globals.flag == 1:
+                            Boss_2(Hero)
+                        global_timer = 0
+                    elif (t == 300 and len(evil_sprites) + len(snipers) < 5) or len(evil_sprites) + len(snipers) == 0:
+                        c = choice([0, 1, 2, 3])
+                        if c == 0:
+                            Sniper('ship.png', True, snipers, shooting_type=choice(globals.snipers))
+                        else:
+                            Enemy('ship.png', True, evil_sprites,
+                                  shooting_type=choice(globals.enemys))
+                        t = 0
+                    elif t == 300:
+                        t = 0
                     else:
-                        Enemy('ship.png', True, evil_sprites,
-                              shooting_type=choice(globals.enemys))
-                    t = 0
-                elif t == 300:
-                    t = 0
-                else:
-                    t += 1
-                    global_timer += 1
+                        t += 1
+                        global_timer += 1"""
 
 
             screen.fill(pygame.Color('black'))

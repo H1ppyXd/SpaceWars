@@ -3,8 +3,8 @@ movement = 0
 
 flag = 1
 # Флаг и счетчик для "телепортации"
-#teleportation = -1
-#tp_flag = True
+teleportation = -1
+tp_flag = True
 
 enemys = ['front_shot', 'triple_shot']
 snipers = ['shot']
@@ -32,6 +32,7 @@ def enemy_kill():
     if enemys_killed < 0:
         enemys_killed = 0
 
+
 def nem_movement(x):
     global movement
     if x == 0:
@@ -40,6 +41,7 @@ def nem_movement(x):
         movement = 1
     elif x == 2:
         movement = 2
+
 
 hero_cooldown = 50
 enemys_killed = 0
