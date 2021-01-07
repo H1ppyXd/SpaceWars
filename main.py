@@ -12,6 +12,7 @@ from Bullets import Bullet, Bullet_wall
 from Boss_1 import Boss_1
 from Boss_2 import Boss_2
 
+
 class Dot:
     def __init__(self, x, y):
         self.x = x
@@ -83,7 +84,7 @@ def main_menu():
 
     leaderboard = pygame_gui.elements.UIButton(
         relative_rect=pygame.Rect((wigth // 2 - 100, height // 2 + 45), (200, 50)),
-        text='leaderboard',
+        text='Leaderboard',
         manager=manager
     )
 
@@ -105,6 +106,8 @@ def main_menu():
                         select_lvl()
                     if event.ui_element == options:
                         option()
+                    if event.ui_element == leaderboard:
+                        leaders()
                     if event.ui_element == exit_btn:
                         exit(-1)
             manager.process_events(event)
@@ -116,11 +119,18 @@ def main_menu():
 
 
 def select_lvl():
+    running = True
     manager = pygame_gui.UIManager(size)
 
     f1 = pygame.font.Font(None, 72)
     text1 = f1.render('Select Level', True,
                       (255, 255, 255))
+
+    back_to_menu = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect((10, 10), (25, 25)),
+        text='<-',
+        manager=manager
+    )
 
     first_lvl = pygame_gui.elements.UIButton(
         relative_rect=pygame.Rect((wigth // 2 - 175, height // 2), (100, 100)),
@@ -140,14 +150,19 @@ def select_lvl():
         manager=manager
     )
 
-    while True:
+    while running:
         screen.fill(pygame.Color('black'))
+        keys = pygame.key.get_pressed()
         time_delta = clock.tick(75) / 1000.0
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit(-1)
+            if keys[pygame.K_ESCAPE] == 1:
+                running = False
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                    if event.ui_element == back_to_menu:
+                        running = False
                     if event.ui_element == first_lvl:
                         game(1)
                     if event.ui_element == second_lvl:
@@ -155,6 +170,50 @@ def select_lvl():
                     if event.ui_element == infinity_lvl:
                         game(3)
             manager.process_events(event)
+        background()
+        manager.update(time_delta)
+        manager.draw_ui(screen)
+        screen.blit(text1, (wigth // 2 - 130, 100))
+        pygame.display.flip()
+
+
+def leaders():
+    running = True
+    x, y = wigth // 2 - 75, 200
+
+    manager = pygame_gui.UIManager(size)
+    f1 = pygame.font.Font(None, 72)
+    f2 = pygame.font.Font(None, 36)
+
+    text1 = f1.render('Leaderboard', True, (255, 255, 255))
+
+    back_to_menu = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect((10, 10), (25, 25)),
+        text='<-',
+        manager=manager
+    )
+
+    while running:
+        screen.fill(pygame.Color('black'))
+        keys = pygame.key.get_pressed()
+        time_delta = clock.tick(75) / 1000.0
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                exit(-1)
+            if keys[pygame.K_ESCAPE] == 1:
+                running = False
+            if event.type == pygame.USEREVENT:
+                if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                    if event.ui_element == back_to_menu:
+                        running = False
+            manager.process_events(event)
+
+        # Range() заменить на массив типа [Player, Score, Mode]
+        # В будущем
+        for i in range(10):
+            text = f2.render(f'{i}: name    AM', True, (255, 255, 255))
+            screen.blit(text, (x, y + (i * 50)))
+
         background()
         manager.update(time_delta)
         manager.draw_ui(screen)
@@ -170,12 +229,20 @@ def option():
         st_op = 'Realistic movement'
     elif globals.movement == 2:
         st_op = 'Simulation movement'
+
     difficulty = pygame_gui.elements.ui_drop_down_menu.UIDropDownMenu(
         options_list=['Arcade movement', 'Realistic movement', 'Simulation movement'],
         starting_option=st_op,
         relative_rect=pygame.Rect((wigth // 2 - 100, height // 2 + 45), (200, 50)),
         manager=manager
     )
+
+    back_to_menu = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect((10, 10), (25, 25)),
+        text='<-',
+        manager=manager
+    )
+
     running = True
     while running:
         keys = pygame.key.get_pressed()
@@ -187,6 +254,9 @@ def option():
             if keys[pygame.K_ESCAPE] == 1:
                 running = False
             if event.type == pygame.USEREVENT:
+                if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                    if event.ui_element == back_to_menu:
+                        running = False
                 if event.user_type == pygame_gui.UI_DROP_DOWN_MENU_CHANGED:
                     if event.text == 'Arcade movement':
                         globals.nem_movement(0)
@@ -195,6 +265,7 @@ def option():
                     else:
                         globals.nem_movement(2)
             manager.process_events(event)
+        background()
         manager.update(time_delta)
         manager.draw_ui(screen)
         pygame.display.flip()
@@ -295,7 +366,6 @@ def game(lvl):
                     else:
                         t += 1
                         global_timer += 1
-
 
             screen.fill(pygame.Color('black'))
 
