@@ -10,9 +10,9 @@ snipers = pygame.sprite.Group()
 boss_sprite = pygame.sprite.Group()
 
 # Новые группы пуль
-#guided_bullet = pygame.sprite.Group()
-#stop_bullets = pygame.sprite.Group()
-#wall_bullets = pygame.sprite.Group()
+guided_bullet = pygame.sprite.Group()
+stop_bullets = pygame.sprite.Group()
+wall_bullets = pygame.sprite.Group()
 
 bullet_wall = pygame.sprite.Group()
 boss_bullets = pygame.sprite.Group()

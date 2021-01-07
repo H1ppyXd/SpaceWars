@@ -171,7 +171,7 @@ class Freeze_bullets(Bullet):
             self.freeze = False
 
 # Новые классы пуль
-"""
+
 class Guided_bullet(Bullet):
     def update(self, screen, hero):
         self.naprevl = pygame.Vector2(-self.rect.centerx + hero.rect.centerx,
@@ -202,4 +202,4 @@ class Wall_bullet(Stop_Bullet):
         if self.stop_timer == self.time:
             self.kill()
         else:
-            self.stop_timer += 1"""
+            self.stop_timer += 1

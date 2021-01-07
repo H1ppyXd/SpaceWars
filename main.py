@@ -268,9 +268,8 @@ def game(lvl):
                 print('2 level')
 
             if lvl == 3:
-                print('3 level')
-                """if not now_boss_flag:
-                    if global_timer == 100 or globals.enemys_killed == 50:
+                if not now_boss_flag:
+                    if global_timer == 10000 or globals.enemys_killed == 50:
                         globals.now_boss_flag = True
                         evil_sprites.empty()
                         snipers.empty()
@@ -295,7 +294,7 @@ def game(lvl):
                         t = 0
                     else:
                         t += 1
-                        global_timer += 1"""
+                        global_timer += 1
 
 
             screen.fill(pygame.Color('black'))
@@ -346,7 +345,6 @@ def game(lvl):
             boss_sprite.draw(screen)
 
         # Ленивая кастомизация телепортации
-        """
         elif globals.teleportation < 256:
             surf = pygame.Surface((1000, 800))
             surf.fill((0, 155, 255))
@@ -362,7 +360,7 @@ def game(lvl):
         elif globals.teleportation != -1 and not globals.tp_flag:
             globals.teleportation -= 2
             if globals.teleportation == 0:
-                globals.teleportation -= 1"""
+                globals.teleportation -= 1
 
         pygame.display.flip()
 

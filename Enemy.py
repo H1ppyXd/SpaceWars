@@ -53,9 +53,9 @@ class Base_Enemy(pygame.sprite.Sprite):
             if pygame.sprite.collide_mask(self, bullet):
                 self.hp -= 1
                 bullet.kill()
-            if self.hp == 0:
-                self.kill()
-                globals.enemy_kill()
+        if self.hp <= 0:
+            self.kill()
+            globals.enemy_kill()
 
 
 class Enemy(Base_Enemy):

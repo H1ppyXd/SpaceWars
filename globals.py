@@ -1,7 +1,7 @@
 now_boss_flag = False
 movement = 0
 
-flag = 1
+flag = 0
 # Флаг и счетчик для "телепортации"
 teleportation = -1
 tp_flag = True

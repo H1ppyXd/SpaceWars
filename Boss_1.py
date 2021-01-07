@@ -147,10 +147,12 @@ class Boss_1(pygame.sprite.Sprite):
 
         if self.deaf_timer == 1300:
             globals.now_boss_flag = False
+
         # Добавление новых врагов
-        #    globals.snipers.append('sniper_shot')
-        #    globals.snipers.remove(globals.snipers[0])
-        #    globals.enemys.append('five_shotes')
-        #    globals.enemys.remove(globals.enemys[0])
+            globals.snipers.append('sniper_shot')
+            globals.snipers.remove(globals.snipers[0])
+            globals.enemys.append('five_shotes')
+            globals.enemys.remove(globals.enemys[0])
+
             self.kill()
             globals.flag += 1
