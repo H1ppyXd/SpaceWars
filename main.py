@@ -319,13 +319,13 @@ def game(lvl):
                 wall_flag = True
 
             snipers.update(screen, Hero)
-            #wall_bullets.update(screen)
+            wall_bullets.update(screen)
             evil_sprites.update(screen)
             enemy_bullets.update(screen)
             hero_bullets.update(screen)
             bullet_wall.update(screen)
-            #guided_bullet.update(screen, Hero)
-            #stop_bullets.update(screen, Hero)
+            guided_bullet.update(screen, Hero)
+            stop_bullets.update(screen, Hero)
             boss_sprite.update(screen)
             boss_bullets.update(screen, 0)
 
@@ -333,12 +333,12 @@ def game(lvl):
             background()
 
             boss_bullets.draw(screen)
-            #wall_bullets.draw(screen)
+            wall_bullets.draw(screen)
             bullet_wall.draw(screen)
             snipers.draw(screen)
             enemy_bullets.draw(screen)
-            #guided_bullet.draw(screen)
-            #stop_bullets.draw(screen)
+            guided_bullet.draw(screen)
+            stop_bullets.draw(screen)
             hero_bullets.draw(screen)
             evil_sprites.draw(screen)
             good_sprites.draw(screen)

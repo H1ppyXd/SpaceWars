@@ -116,9 +116,9 @@ class Boss_1(pygame.sprite.Sprite):
             self.wall_cooldown = -1
             Super_bullet('enemy_bullet.png', self.rect.center,
                         pygame.Vector2(-1, 0).normalize(), 1, enemy_bullets, size=(70, 70))
-            Bullet('enemy_bullet.png', (self.rect.centerx - 50, self.rect.centery - 370),
+            Bullet('enemy_bullet.png', (self.rect.centerx + 100, self.rect.centery - 370),
                         pygame.Vector2(-1, 0).normalize(), 1, enemy_bullets, size=(20, 20))
-            Bullet('enemy_bullet.png', (self.rect.centerx - 50, self.rect.centery + 370),
+            Bullet('enemy_bullet.png', (self.rect.centerx + 100, self.rect.centery + 370),
                         pygame.Vector2(-1, 0).normalize(), 1, enemy_bullets, size=(20, 20))
             self.deaf_timer = 0
 

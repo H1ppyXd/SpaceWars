@@ -70,7 +70,7 @@ class Hero(pygame.sprite.Sprite):
                 globals.enemys_killed -= 20
                 self.inv = True
                 self.inv_timer = 0
-        for group in [enemy_bullets, snipers, evil_sprites, boss_bullets]:  # <--- guided_bullet, stop_bullets
+        for group in [enemy_bullets, snipers, evil_sprites, boss_bullets, guided_bullet, stop_bullets]:
             for bullet in group:
                 if pygame.sprite.collide_mask(self, bullet) and not self.inv:
                     self.hp -= 1
