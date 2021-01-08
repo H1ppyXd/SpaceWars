@@ -1,5 +1,6 @@
 import pygame_gui
 import pygame
+import pygame
 import hero as h
 import math
 import random
@@ -33,7 +34,34 @@ data = [Dot(random.randint(0, 1200), random.randint(0, 800)) for i in range(50)]
 
 
 def game_over():
-    pass
+    running = True
+    manager = pygame_gui.UIManager(size)
+
+    f1 = pygame.font.Font(None, 72)
+    text1 = f1.render('Введите имя', True,
+                      (255, 255, 255))
+
+    back_to_menu = pygame_gui.elements.ui_text_entry_line.UITextEntryLine(
+        relative_rect=pygame.Rect((wigth // 2 - 100, height // 2 - 75), (200, 50)),
+        manager=manager
+    )
+
+    while running:
+        screen.fill(pygame.Color('black'))
+        keys = pygame.key.get_pressed()
+        time_delta = clock.tick(75) / 1000.0
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                exit(-1)
+            if keys[pygame.K_RETURN] == 1:
+                running = False
+                globals.players.append([back_to_menu.get_text(), 10, 'AM'])
+            manager.process_events(event)
+        background()
+        manager.update(time_delta)
+        manager.draw_ui(screen)
+        screen.blit(text1, (wigth // 2 - 130, 100))
+        pygame.display.flip()
 
 
 def background():
@@ -180,7 +208,7 @@ def select_lvl():
 
 def leaders():
     running = True
-    x, y = wigth // 2 - 75, 200
+    x, y = wigth // 2 - 130, 200
 
     manager = pygame_gui.UIManager(size)
     f1 = pygame.font.Font(None, 72)
@@ -211,9 +239,11 @@ def leaders():
 
         # Range() заменить на массив типа [Player, Score, Mode]
         # В будущем
-        for i in range(10):
-            text = f2.render(f'{i}: name    AM', True, (255, 255, 255))
-            screen.blit(text, (x, y + (i * 50)))
+        place = 1
+        for player in globals.players:
+            text = f2.render(f'{place}: {player[0]} coins: {player[1]} Mode:{player[2]}', True, (255, 255, 255))
+            screen.blit(text, (x, y + (place * 50)))
+            place += 1
 
         background()
         manager.update(time_delta)
@@ -355,7 +385,6 @@ def game(lvl):
                         globals.teleportation = 0
                         if globals.flag == 0:
                             Boss_1()
-                        # Подгрузка второго босса
                         elif globals.flag == 1:
                             Boss_2(Hero)
                         else:
@@ -443,6 +472,10 @@ def game(lvl):
                 globals.teleportation -= 1
 
         pygame.display.flip()
+
+        if globals.is_still_alive == 0:
+            running = False
+            game_over()
 
 
 pygame.init()
