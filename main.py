@@ -11,6 +11,7 @@ from random import sample, choice
 from Bullets import Bullet, Bullet_wall
 from Boss_1 import Boss_1
 from Boss_2 import Boss_2
+from Boss_3 import Boss_3
 
 
 class Dot:
@@ -284,8 +285,13 @@ def game(lvl):
         keys = pygame.key.get_pressed()
         if globals.teleportation == -1:                 # Ленивая кастомизация телепортации
             if movement == 0:
-                x = (keys[pygame.K_d] * 5 - keys[pygame.K_a] * 5)
-                y = (keys[pygame.K_s] * 5 - keys[pygame.K_w] * 5)
+                sp = globals.speed
+                if globals.uprav:
+                    x = (keys[pygame.K_d] * sp - keys[pygame.K_a] * sp)
+                    y = (keys[pygame.K_s] * sp - keys[pygame.K_w] * sp)
+                else:
+                    x = (keys[pygame.K_a] * sp - keys[pygame.K_d] * sp)
+                    y = (keys[pygame.K_w] * sp - keys[pygame.K_s] * sp)
                 x, y = check_player_pos(x, y)
                 Hero.update(x, y, screen)
 
@@ -340,7 +346,7 @@ def game(lvl):
 
             if lvl == 3:
                 if not now_boss_flag:
-                    if global_timer == 10000 or globals.enemys_killed == 50:
+                    if global_timer == 100 or globals.enemys_killed == 50:
                         globals.now_boss_flag = True
                         evil_sprites.empty()
                         snipers.empty()
@@ -352,6 +358,8 @@ def game(lvl):
                         # Подгрузка второго босса
                         elif globals.flag == 1:
                             Boss_2(Hero)
+                        else:
+                            Boss_3(Hero)
                         global_timer = 0
                     elif (t == 300 and len(evil_sprites) + len(snipers) < 5) or len(evil_sprites) + len(snipers) == 0:
                         c = choice([0, 1, 2, 3])
@@ -389,6 +397,7 @@ def game(lvl):
                 wall_flag = True
 
             snipers.update(screen, Hero)
+            circles.update()
             wall_bullets.update(screen)
             evil_sprites.update(screen)
             enemy_bullets.update(screen)
@@ -413,6 +422,7 @@ def game(lvl):
             evil_sprites.draw(screen)
             good_sprites.draw(screen)
             boss_sprite.draw(screen)
+            circles.draw(screen)
 
         # Ленивая кастомизация телепортации
         elif globals.teleportation < 256:

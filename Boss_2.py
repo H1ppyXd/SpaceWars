@@ -310,7 +310,3 @@ class Boss_2(pygame.sprite.Sprite):
                 globals.enemys.append('giant_shot')
                 globals.enemys.remove(globals.enemys[0])
                 globals.flag += 1
-
-
-
-# КОД ВТОРОГО БОССА НЕ БУДЕТ РАБОТАТЬ БЕЗ НОВЫХ ГРУПП СПРАЙТОВ И КЛАССОВ ПУЛЬ!

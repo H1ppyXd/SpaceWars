@@ -98,11 +98,10 @@ class Enemy(Base_Enemy):
 
 
 class Sniper(Base_Enemy):
-    # Новый вид стрельбы
-    #def shot(self, Hero):
-    #    Bullet('enemy_bullet.png', self.rect.center,
-    #            pygame.Vector2(Hero.centerx - self.rect.centerx,
-    #                            Hero.centery - self.rect.centery).normalize(), 7, enemy_bullets, size=(15, 15))
+    def shot(self, Hero):
+        Bullet('enemy_bullet.png', self.rect.center,
+                pygame.Vector2(Hero.centerx - self.rect.centerx,
+                                Hero.centery - self.rect.centery).normalize(), 7, enemy_bullets, size=(15, 15))
 
     def sniper_shot(self, Hero):
         Bullet('enemy_bullet.png', self.rect.center,

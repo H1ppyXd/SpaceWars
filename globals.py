@@ -2,11 +2,14 @@ now_boss_flag = False
 movement = 0
 
 coins = 0
-
-flag = 0
+is_still_alive = 1
+flag = 2
+uprav = True
+speed = 5
 # Флаг и счетчик для "телепортации"
 teleportation = -1
 tp_flag = True
+
 
 enemys = ['front_shot', 'triple_shot']
 snipers = ['shot']

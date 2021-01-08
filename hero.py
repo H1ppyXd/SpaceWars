@@ -81,6 +81,7 @@ class Hero(pygame.sprite.Sprite):
 
         if self.hp <= 0:
             self.kill()
+            globals.is_still_alive = 0
             guided_bullet.empty()
         if self.inv_timer == 50:
             self.inv = False
