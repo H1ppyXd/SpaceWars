@@ -5,6 +5,7 @@ import math
 from sprite_groups import *
 import globals
 
+
 class Hero(pygame.sprite.Sprite):
     image = load_methods.load_image('Hero.png')
 

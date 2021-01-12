@@ -3,7 +3,6 @@ movement = 0
 
 players = []
 
-coins = 0
 is_still_alive = 1
 flag = 2
 uprav = True

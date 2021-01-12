@@ -51,7 +51,6 @@ class Boss_3(pygame.sprite.Sprite):
             else:
                 globals.uprav = True
 
-
         if not self.invicsibility:
             for bullet in hero_bullets:
                 if not self.invicsibility:
