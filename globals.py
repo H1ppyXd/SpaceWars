@@ -3,7 +3,6 @@ movement = 0
 
 players = []
 
-coins = 0
 is_still_alive = 1
 flag = 0
 enem_to = 50

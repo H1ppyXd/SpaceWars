@@ -145,7 +145,6 @@ class Boss_1(pygame.sprite.Sprite):
         if self.freeze_timer != -1:
             self.freeze_timer += 1
 
-
         if self.deaf_timer == 1300:
             globals.now_boss_flag = False
 

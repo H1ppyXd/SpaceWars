@@ -6,6 +6,7 @@ from sprite_groups import *
 import globals
 from Circle import Circle
 
+
 class Hero(pygame.sprite.Sprite):
     image = load_methods.load_image('Hero.png')
 
