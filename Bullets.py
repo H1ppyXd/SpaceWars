@@ -25,6 +25,9 @@ class Bullet(pygame.sprite.Sprite):     # Класс пули
         self.mask = pygame.mask.from_surface(self.image)
         self.pos = pygame.Vector2(self.rect.center)
 
+    def rotate(self, v):
+        self.image = pygame.transform.rotate(self.image, self.naprevl.angle_to(v))
+
     def update(self, screen):
 
         self.pos += self.naprevl * self.speed       # Движение пули
@@ -203,3 +206,52 @@ class Wall_bullet(Stop_Bullet):
             self.kill()
         else:
             self.stop_timer += 1
+
+class Rottating_bullet(Bullet):
+    def __init__(self, name, center, naprevl, speed, group, r_l, time, size=(0, 0)):
+        super().__init__(name, center, naprevl, speed, group, size)
+        self.r_l = r_l
+        self.timer = 0
+        self.time = time
+
+    def update(self, screen):
+        if self.timer == self.time:
+            if self.r_l == 'r':
+                self.naprevl = self.naprevl.rotate(270)
+                self.image = pygame.transform.rotate(self.image, 270)
+            else:
+                self.naprevl = self.naprevl.rotate(90)
+                self.image = pygame.transform.rotate(self.image, 90)
+        self.timer += 1
+        super().update(screen)
+
+
+class Mirror_bullet(Bullet):
+    def __init__(self, name, center, naprevl, speed, group, cols=3, size=(0, 0)):
+        super().__init__(name, center, naprevl, speed, group, size)
+        self.col = 0
+        self.cols = cols
+
+    def update(self, screen):
+        if self.rect.right >= 1000:
+            self.naprevl = self.naprevl.reflect((1, 0))
+            self.image = pygame.transform.flip(self.image, False, True)
+            self.col += 1
+        elif self.rect.left <= 0:
+            self.naprevl = self.naprevl.reflect((-1, 0))
+            self.image = pygame.transform.flip(self.image, False, True)
+            self.col += 1
+        elif self.rect.bottom >= 800:
+            self.naprevl = self.naprevl.reflect((0, -1))
+            self.image = pygame.transform.flip(self.image, False, True)
+            self.col += 1
+        elif self.rect.top <= 0:
+            self.naprevl = self.naprevl.reflect((0, 1))
+            self.image = pygame.transform.flip(self.image, False, True)
+            self.col += 1
+
+        self.pos += self.naprevl * self.speed  # Движение пули
+        self.rect.center = self.pos
+
+        if self.col == self.cols:
+            self.kill()

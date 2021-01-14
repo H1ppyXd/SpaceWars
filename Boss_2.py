@@ -302,6 +302,8 @@ class Boss_2(pygame.sprite.Sprite):
                             wall_bullets.empty()
                             self.cooldown_timer = 0
             if self.hp <= 0:
+                self.hero.hp += 1
+                globals.enem_to += 50
                 self.kill()
                 guided_bullet.empty()
                 globals.now_boss_flag = False

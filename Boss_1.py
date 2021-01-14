@@ -6,7 +6,8 @@ from random import randrange, choice
 import globals
 
 class Boss_1(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, hero):
+        self.hero = hero
         super().__init__(boss_sprite)
         self.hp = 500
         self.image = load_image('boss_1.png')
@@ -153,6 +154,7 @@ class Boss_1(pygame.sprite.Sprite):
             globals.snipers.remove(globals.snipers[0])
             globals.enemys.append('five_shotes')
             globals.enemys.remove(globals.enemys[0])
-
+            globals.enem_to += 50
+            self.hero.hp += 1
             self.kill()
             globals.flag += 1

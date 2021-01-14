@@ -5,8 +5,10 @@ players = []
 
 coins = 0
 is_still_alive = 1
-flag = 2
+flag = 0
+enem_to = 50
 uprav = True
+time_stop = False
 speed = 5
 # Флаг и счетчик для "телепортации"
 teleportation = -1
@@ -19,9 +21,9 @@ snipers = ['shot']
 
 def enemy_kill():
     global hero_cooldown, enemys_killed
-    if enemys_killed != 45:
+    if enemys_killed != 50:
         enemys_killed += 1
-    if enemys_killed == 45:
+    if enemys_killed >= 45:
         hero_cooldown = 15
 
     elif enemys_killed >= 35:

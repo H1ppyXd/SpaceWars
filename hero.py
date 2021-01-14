@@ -4,11 +4,12 @@ from Bullets import Bullet
 import math
 from sprite_groups import *
 import globals
+from Circle import Circle
 
 class Hero(pygame.sprite.Sprite):
     image = load_methods.load_image('Hero.png')
 
-    def __init__(self, sprite_group, hp=5):         # +2 Hp
+    def __init__(self, sprite_group, hp=5):
         super().__init__(sprite_group)
         Hero.image = pygame.transform.scale(Hero.image, (100, 100))
         self.image = Hero.image
@@ -16,6 +17,7 @@ class Hero(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.angle = 0
         self.pov = 0
+        self.circle = 0
         self.rect.x = 100
         self.rect.y = 250
         self.dx = 0
@@ -52,29 +54,33 @@ class Hero(pygame.sprite.Sprite):
         for bullet in wall_bullets:
             if pygame.sprite.collide_mask(self, bullet) and not self.inv:
                 self.hp -= 1
-                globals.enemys_killed -= 20
+                globals.enemys_killed -= 21
+                globals.enemy_kill()
                 self.inv = True
                 self.rect.center = (400, 400)
                 self.inv_timer = 40
         for bullet in bullet_wall:
             if pygame.sprite.collide_mask(self, bullet) and not self.inv:
                 self.hp -= 1
-                globals.enemys_killed -= 20
+                globals.enemys_killed -= 21
+                globals.enemy_kill()
                 self.inv = True
-                self.rect.x -= 110
+                self.rect.x = 700
                 self.inv_timer = 40
 
         for bullet in boss_sprite:
             if pygame.sprite.collide_mask(self, bullet) and not self.inv:
                 self.hp -= 1
-                globals.enemys_killed -= 20
+                globals.enemys_killed -= 21
+                globals.enemy_kill()
                 self.inv = True
                 self.inv_timer = 0
         for group in [enemy_bullets, snipers, evil_sprites, boss_bullets, guided_bullet, stop_bullets]:
             for bullet in group:
                 if pygame.sprite.collide_mask(self, bullet) and not self.inv:
                     self.hp -= 1
-                    globals.enemys_killed -= 20
+                    globals.enemys_killed -= 21
+                    globals.enemy_kill()
                     self.inv = True
                     self.inv_timer = 0
                     bullet.kill()
@@ -83,11 +89,22 @@ class Hero(pygame.sprite.Sprite):
             self.kill()
             globals.is_still_alive = 0
             guided_bullet.empty()
-        if self.inv_timer == 50:
+        if self.inv_timer == 0:
+            self.circle = Circle('skyblue', rad=50)
+        elif self.inv_timer == 100:
+            if self.circle != 0:
+                self.circle.kill()
+            self.circle = 0
             self.inv = False
             self.inv_timer = -1
-        elif self.inv_timer != -1:
+        if self.inv_timer != -1:
             self.inv_timer += 1
+
+        if self.circle != 0:
+            self.circle.rect.center = self.rect.center
+            self.circle.rect.centerx -= 5
+            self.circle.rect.centery -= 5
+
 
     def rotate(self, screen):
         rotated_image = pygame.transform.rotate(self.image, self.angle)

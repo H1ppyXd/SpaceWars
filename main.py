@@ -1,6 +1,5 @@
 import pygame_gui
 import pygame
-import pygame
 import hero as h
 import math
 import random
@@ -73,11 +72,12 @@ def background():
         elif i.y > 800:
             i.y = 0
         pygame.draw.rect(screen, pygame.Color(255, 255, 255), (i.x, i.y, 3, 3))
-        i.moving()
+        if not globals.time_stop:
+            i.moving()
 
 
 def check_player_pos(x, y):
-    if Hero.rect.x > wigth:
+    if Hero.rect.x > wigth - 90:
         x = -1
         Hero.dx = 0
     if Hero.rect.x < 0:
@@ -307,6 +307,7 @@ def game(lvl):
     global_timer = 0
     x, y = 0, 0
     wall_flag = True
+    wall_timer = -1
     running = True
     while running:
         movement = globals.movement
@@ -314,16 +315,17 @@ def game(lvl):
         clock.tick(75)
         keys = pygame.key.get_pressed()
         if globals.teleportation == -1:                 # Ленивая кастомизация телепортации
-            if movement == 0:
-                sp = globals.speed
-                if globals.uprav:
-                    x = (keys[pygame.K_d] * sp - keys[pygame.K_a] * sp)
-                    y = (keys[pygame.K_s] * sp - keys[pygame.K_w] * sp)
-                else:
-                    x = (keys[pygame.K_a] * sp - keys[pygame.K_d] * sp)
-                    y = (keys[pygame.K_w] * sp - keys[pygame.K_s] * sp)
-                x, y = check_player_pos(x, y)
-                Hero.update(x, y, screen)
+            if not globals.time_stop:
+                if movement == 0:
+                    sp = globals.speed
+                    if globals.uprav:
+                        x = (keys[pygame.K_d] * sp - keys[pygame.K_a] * sp)
+                        y = (keys[pygame.K_s] * sp - keys[pygame.K_w] * sp)
+                    else:
+                        x = (keys[pygame.K_a] * sp - keys[pygame.K_d] * sp)
+                        y = (keys[pygame.K_w] * sp - keys[pygame.K_s] * sp)
+                    x, y = check_player_pos(x, y)
+                    Hero.update(x, y, screen)
 
             if movement == 1:
                 if keys[pygame.K_d] == 0 and keys[pygame.K_a] == 0:
@@ -376,7 +378,7 @@ def game(lvl):
 
             if lvl == 3:
                 if not now_boss_flag:
-                    if global_timer == 100 or globals.enemys_killed == 50:
+                    if global_timer == 15000 or globals.enemys_killed == globals.enem_to:
                         globals.now_boss_flag = True
                         evil_sprites.empty()
                         snipers.empty()
@@ -384,7 +386,7 @@ def game(lvl):
                         globals.tp_flag = True
                         globals.teleportation = 0
                         if globals.flag == 0:
-                            Boss_1()
+                            Boss_1(Hero)
                         elif globals.flag == 1:
                             Boss_2(Hero)
                         else:
@@ -422,20 +424,26 @@ def game(lvl):
                     Bullet_wall('crystal1.png', (950, el),
                                 pygame.Vector2(-1, 0).normalize(), 10, bullet_wall, size=(30, 30))
                 wall_flag = False
-            elif not wall_flag and Hero.rect.x < 750:
+                wall_timer = 0
+            elif Hero.rect.x < 750 or wall_timer == 100:
                 wall_flag = True
+                wall_timer = -1
+            if wall_timer != -1:
+                wall_timer += 1
 
-            snipers.update(screen, Hero)
-            circles.update()
-            wall_bullets.update(screen)
-            evil_sprites.update(screen)
-            enemy_bullets.update(screen)
-            hero_bullets.update(screen)
-            bullet_wall.update(screen)
-            guided_bullet.update(screen, Hero)
-            stop_bullets.update(screen, Hero)
+            if not globals.time_stop:
+                snipers.update(screen, Hero)
+                circles.update()
+                wall_bullets.update(screen)
+                evil_sprites.update(screen)
+                enemy_bullets.update(screen)
+                hero_bullets.update(screen)
+                bullet_wall.update(screen)
+                guided_bullet.update(screen, Hero)
+                stop_bullets.update(screen, Hero)
+                boss_bullets.update(screen, 0)
+
             boss_sprite.update(screen)
-            boss_bullets.update(screen, 0)
 
             #  Чтобы убрать фон в игре закомментируй это
             background()
