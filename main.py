@@ -3,8 +3,9 @@ import pygame
 import hero as h
 import math
 import random
-
 import globals
+import sqlite3
+
 from Enemy import *
 from sprite_groups import *
 from random import sample, choice
@@ -44,6 +45,7 @@ def game_over():
         relative_rect=pygame.Rect((wigth // 2 - 100, height // 2 - 75), (200, 50)),
         manager=manager
     )
+    connection = sqlite3.connect("leaderboard.db")
 
     while running:
         screen.fill(pygame.Color('black'))
@@ -54,7 +56,9 @@ def game_over():
                 exit(-1)
             if keys[pygame.K_RETURN] == 1:
                 running = False
-                globals.players.append([back_to_menu.get_text(), 10, 'AM'])
+                query = f"INSERT INTO leaders(player, score, mode) VALUES('{back_to_menu.get_text()}', {10}, '{globals.st_op}')"
+                connection.cursor().execute(query)
+                connection.commit()
             manager.process_events(event)
         background()
         manager.update(time_delta)
@@ -162,19 +166,31 @@ def select_lvl():
     )
 
     first_lvl = pygame_gui.elements.UIButton(
-        relative_rect=pygame.Rect((wigth // 2 - 175, height // 2), (100, 100)),
+        relative_rect=pygame.Rect((wigth // 2 - 250, height // 2), (100, 100)),
         text='1',
         manager=manager
     )
 
     second_lvl = pygame_gui.elements.UIButton(
-        relative_rect=pygame.Rect((wigth // 2 - 75, height // 2), (100, 100)),
+        relative_rect=pygame.Rect((wigth // 2 - 150, height // 2), (100, 100)),
         text='2',
         manager=manager
     )
 
+    third_lvl = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect((wigth // 2 - 50, height // 2), (100, 100)),
+        text='3',
+        manager=manager
+    )
+
+    four_lvl = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect((wigth // 2 + 50, height // 2), (100, 100)),
+        text='4',
+        manager=manager
+    )
+
     infinity_lvl = pygame_gui.elements.UIButton(
-        relative_rect=pygame.Rect((wigth // 2 + 25, height // 2), (100, 100)),
+        relative_rect=pygame.Rect((wigth // 2 + 150, height // 2), (100, 100)),
         text='infinity',
         manager=manager
     )
@@ -196,8 +212,12 @@ def select_lvl():
                         game(1)
                     if event.ui_element == second_lvl:
                         game(2)
-                    if event.ui_element == infinity_lvl:
+                    if event.ui_element == second_lvl:
                         game(3)
+                    if event.ui_element == second_lvl:
+                        game(4)
+                    if event.ui_element == infinity_lvl:
+                        game(5)
             manager.process_events(event)
         background()
         manager.update(time_delta)
@@ -208,7 +228,14 @@ def select_lvl():
 
 def leaders():
     running = True
-    x, y = wigth // 2 - 130, 200
+    x, y = wigth // 2 - 250, 200
+
+    connection = sqlite3.connect("leaderboard.db")
+    query = f"SELECT * FROM leaders"
+    res = connection.cursor().execute(query).fetchall()
+    res = sorted(res, key=lambda x: x[1], reverse=True)
+    print(res)
+    connection.commit()
 
     manager = pygame_gui.UIManager(size)
     f1 = pygame.font.Font(None, 72)
@@ -240,8 +267,8 @@ def leaders():
         # Range() заменить на массив типа [Player, Score, Mode]
         # В будущем
         place = 1
-        for player in globals.players:
-            text = f2.render(f'{place}: {player[0]} coins: {player[1]} Mode:{player[2]}', True, (255, 255, 255))
+        for player in res:
+            text = f2.render(f'{place}: {player[0]}      coins: {player[1]}      Mode:{player[2]}', True, (255, 255, 255))
             screen.blit(text, (x, y + (place * 50)))
             place += 1
 
@@ -255,15 +282,15 @@ def leaders():
 def option():
     manager = pygame_gui.UIManager(size)
     if globals.movement == 0:
-        st_op = 'Arcade movement'
+        globals.st_op = 'Arcade movement'
     elif globals.movement == 1:
-        st_op = 'Realistic movement'
+        globals.st_op = 'Realistic movement'
     elif globals.movement == 2:
-        st_op = 'Simulation movement'
+        globals.st_op = 'Simulation movement'
 
     difficulty = pygame_gui.elements.ui_drop_down_menu.UIDropDownMenu(
         options_list=['Arcade movement', 'Realistic movement', 'Simulation movement'],
-        starting_option=st_op,
+        starting_option=globals.st_op,
         relative_rect=pygame.Rect((wigth // 2 - 100, height // 2 + 45), (200, 50)),
         manager=manager
     )
@@ -371,12 +398,23 @@ def game(lvl):
                     Hero.shot()
 
             if lvl == 1:
-                print('1 level')
+                pass
+                # Обычные и снайперы
 
             if lvl == 2:
-                print('2 level')
+                pass
+                # Первый босс
 
             if lvl == 3:
+                pass
+                # Второй босс
+
+            if lvl == 4:
+                pass
+                # Третий босс
+
+            if lvl == 5:
+                # Бесконечно спавняться враги все больше и больше
                 if not now_boss_flag:
                     if global_timer == 15000 or globals.enemys_killed == globals.enem_to:
                         globals.now_boss_flag = True

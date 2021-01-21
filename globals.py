@@ -2,8 +2,11 @@ now_boss_flag = False
 movement = 0
 
 players = []
+st_op = 'Arcade movement'
 
+# Монетки
 coins = 0
+
 is_still_alive = 1
 flag = 0
 enem_to = 50
