@@ -7,6 +7,9 @@ st_op = 'Arcade movement'
 # Монетки
 coins = 0
 
+cp_flag = False
+win_flag = False
+
 is_still_alive = 1
 flag = 0
 enem_to = 50

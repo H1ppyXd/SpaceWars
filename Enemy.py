@@ -56,6 +56,7 @@ class Base_Enemy(pygame.sprite.Sprite):
         if self.hp <= 0:
             self.kill()
             globals.enemy_kill()
+            globals.coins += 1
 
 
 class Enemy(Base_Enemy):

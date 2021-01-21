@@ -311,4 +311,5 @@ class Boss_2(pygame.sprite.Sprite):
                 globals.snipers.remove(globals.snipers[0])
                 globals.enemys.append('giant_shot')
                 globals.enemys.remove(globals.enemys[0])
+                globals.coins += 15
                 globals.flag += 1

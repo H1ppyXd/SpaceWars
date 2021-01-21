@@ -56,7 +56,8 @@ def game_over():
                 exit(-1)
             if keys[pygame.K_RETURN] == 1:
                 running = False
-                query = f"INSERT INTO leaders(player, score, mode) VALUES('{back_to_menu.get_text()}', {10}, '{globals.st_op}')"
+                query = f"INSERT INTO leaders(player, score, mode) VALUES('{back_to_menu.get_text()}', " \
+                        f"{globals.coins}, '{globals.st_op}')"
                 connection.cursor().execute(query)
                 connection.commit()
             manager.process_events(event)
@@ -197,7 +198,7 @@ def select_lvl():
 
     renamed_lvl = pygame_gui.elements.UIButton(
         relative_rect=pygame.Rect((wigth // 2 + 250, height // 2), (100, 100)),
-        text='renamed',
+        text='Campaign',
         manager=manager
     )
 
@@ -218,9 +219,9 @@ def select_lvl():
                         game(1)
                     if event.ui_element == second_lvl:
                         game(2)
-                    if event.ui_element == second_lvl:
+                    if event.ui_element == third_lvl:
                         game(3)
-                    if event.ui_element == second_lvl:
+                    if event.ui_element == four_lvl:
                         game(4)
                     if event.ui_element == infinity_lvl:
                         game(5)
@@ -341,6 +342,8 @@ def option():
 
 
 def game(lvl):
+    #pygame.mixer.music.load(...)
+    #pygame.mixer.music.play(-1)
     t = 300
     global_timer = 0
     x, y = 0, 0
@@ -409,23 +412,68 @@ def game(lvl):
                     Hero.shot()
 
             if lvl == 1:
-                pass
-                # Обычные и снайперы
+                if (t == 300 and len(evil_sprites) + len(snipers) < 5) or len(evil_sprites) + len(snipers) == 0:
+                    c = choice([0, 1, 2, 3])
+                    if c == 0:
+                        Sniper('ship.png', True, snipers, shooting_type=choice(globals.snipers))
+                    else:
+                        Enemy('ship.png', True, evil_sprites,
+                              shooting_type=choice(globals.enemys))
+                    t = 0
+                elif t == 300:
+                    t = 0
+                else:
+                    t += 1
 
             if lvl == 2:
-                pass
-                # Первый босс
+                if not now_boss_flag:
+                    if t == 500:
+                        globals.now_boss_flag = True
+                        Boss_1(Hero)
+                        t = 0
+                    elif t < 500:
+                        t += 1
 
             if lvl == 3:
-                pass
-                # Второй босс
+                if not now_boss_flag:
+                    if t == 500:
+                        globals.now_boss_flag = True
+                        Boss_2(Hero)
+                        t = 0
+                    elif t < 500:
+                        t += 1
 
             if lvl == 4:
-                pass
-                # Третий босс
+                if not now_boss_flag:
+                    if t == 500:
+                        globals.now_boss_flag = True
+                        Boss_3(Hero)
+                        t = 0
+                    elif t < 500:
+                        t += 1
 
             if lvl == 5:
-                # Бесконечно спавняться враги все больше и больше
+                if 'cline_shot' not in globals.snipers:
+                    globals.snipers.append('cline_shot')
+                    globals.snipers.append('sniper_shot')
+                    globals.enemys.append('five_shotes')
+                    globals.enemys.append('giant_shot')
+                if t == 300 or len(evil_sprites) + len(snipers) == 0:
+                    c = choice([0, 1, 2, 3])
+                    if c == 0:
+                        Sniper('ship.png', True, snipers, shooting_type=choice(globals.snipers))
+                    else:
+                        Enemy('ship.png', True, evil_sprites,
+                              shooting_type=choice(globals.enemys))
+                    t = 0
+                elif t == 300:
+                    t = 0
+                else:
+                    t += 1
+
+            if lvl == 6:
+                if not globals.cp_flag:
+                    globals.cp_flag = True
                 if not now_boss_flag:
                     if global_timer == 15000 or globals.enemys_killed == globals.enem_to:
                         globals.now_boss_flag = True
@@ -454,9 +502,6 @@ def game(lvl):
                     else:
                         t += 1
                         global_timer += 1
-
-            if lvl == 6:
-                pass
 
             screen.fill(pygame.Color('black'))
 
@@ -533,18 +578,22 @@ def game(lvl):
 
         pygame.display.flip()
 
-        if globals.is_still_alive == 0:
+        if globals.is_still_alive == 0 or globals.win_flag:
             running = False
+            globals.is_still_alive = 1
+            globals.win_flag = False
+            globals.cp_flag = False
+            #pygame.mixer.music.stop()
+            #pygame.mixer.music.unload()
             game_over()
 
 
 pygame.init()
 movement = globals.movement
+Hero = h.Hero(good_sprites)
+good_sprites.add(Hero)
 size = wigth, height = 1000, 800
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption('SpaceWars')
-Hero = h.Hero(good_sprites)
-
-good_sprites.add(Hero)
 clock = pygame.time.Clock()
 main_menu()

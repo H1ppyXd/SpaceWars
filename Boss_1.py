@@ -156,4 +156,5 @@ class Boss_1(pygame.sprite.Sprite):
             globals.enem_to += 50
             self.hero.hp += 1
             self.kill()
+            globals.coins += 10
             globals.flag += 1

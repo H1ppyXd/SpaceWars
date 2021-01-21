@@ -452,3 +452,7 @@ class Boss_3(pygame.sprite.Sprite):
                 self.atcs = ['world']
             if self.hp <= 0:
                 self.kill()
+                globals.now_boss_flag = False
+                globals.coins += 50
+                if globals.cp_flag:
+                    globals.win_flag = True
