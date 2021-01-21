@@ -195,6 +195,12 @@ def select_lvl():
         manager=manager
     )
 
+    renamed_lvl = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect((wigth // 2 + 250, height // 2), (100, 100)),
+        text='renamed',
+        manager=manager
+    )
+
     while running:
         screen.fill(pygame.Color('black'))
         keys = pygame.key.get_pressed()
@@ -218,6 +224,8 @@ def select_lvl():
                         game(4)
                     if event.ui_element == infinity_lvl:
                         game(5)
+                    if event.ui_element == renamed_lvl:
+                        game(6)
             manager.process_events(event)
         background()
         manager.update(time_delta)
@@ -446,6 +454,9 @@ def game(lvl):
                     else:
                         t += 1
                         global_timer += 1
+
+            if lvl == 6:
+                pass
 
             screen.fill(pygame.Color('black'))
 
