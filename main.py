@@ -318,10 +318,13 @@ def option():
                 if event.user_type == pygame_gui.UI_DROP_DOWN_MENU_CHANGED:
                     if event.text == 'Arcade movement':
                         globals.nem_movement(0)
+                        globals.st_op = 'Arcade movement'
                     elif event.text == 'Realistic movement':
                         globals.nem_movement(1)
+                        globals.st_op = 'Realistic movement'
                     else:
                         globals.nem_movement(2)
+                        globals.st_op = 'Simulator movement'
             manager.process_events(event)
         background()
         manager.update(time_delta)
