@@ -358,6 +358,7 @@ def game(lvl):
     Hero.rect.x = 100
     Hero.rect.y = 250
     globals.is_still_alive = 1
+    f1 = pygame.font.Font(None, 24)
     while running:
         movement = globals.movement
         now_boss_flag = globals.now_boss_flag
@@ -584,6 +585,10 @@ def game(lvl):
             if globals.teleportation == 0:
                 globals.teleportation -= 1
 
+        text = f1.render(f'Coins: {globals.coins}', True, (255, 255, 255))
+        text2 = f1.render(f'Hp: {Hero.hp}', True, (255, 255, 255))
+        screen.blit(text, (wigth - 100, 10))
+        screen.blit(text2, (10, 10))
         pygame.display.flip()
 
         if globals.is_still_alive == 0 or globals.win_flag:
