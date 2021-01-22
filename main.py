@@ -355,6 +355,8 @@ def game(lvl):
     wall_timer = -1
     running = True
     Hero.hp = 5
+    Hero.rect.x = 100
+    Hero.rect.y = 250
     globals.is_still_alive = 1
     while running:
         movement = globals.movement
@@ -588,6 +590,20 @@ def game(lvl):
             running = False
             globals.is_still_alive = 1
             globals.win_flag = False
+
+            hero_bullets.empty()
+            evil_sprites.empty()
+            enemy_bullets.empty()
+            snipers.empty()
+            boss_sprite.empty()
+            guided_bullet.empty()
+            stop_bullets.empty()
+            wall_bullets.empty()
+            circles.empty()
+            zone.empty()
+            bullet_wall.empty()
+            boss_bullets.empty()
+
             globals.cp_flag = False
             #pygame.mixer.music.stop()
             #pygame.mixer.music.unload()
