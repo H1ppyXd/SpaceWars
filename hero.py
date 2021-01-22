@@ -87,9 +87,9 @@ class Hero(pygame.sprite.Sprite):
                     bullet.kill()
 
         if self.hp <= 0:
-            self.kill()
             globals.is_still_alive = 0
             guided_bullet.empty()
+
         if self.inv_timer == 0:
             self.circle = Circle('skyblue', rad=50)
         elif self.inv_timer == 100:
@@ -105,7 +105,6 @@ class Hero(pygame.sprite.Sprite):
             self.circle.rect.center = self.rect.center
             self.circle.rect.centerx -= 5
             self.circle.rect.centery -= 5
-
 
     def rotate(self, screen):
         rotated_image = pygame.transform.rotate(self.image, self.angle)

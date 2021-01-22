@@ -227,7 +227,10 @@ def select_lvl():
                         game(5)
                     if event.ui_element == renamed_lvl:
                         game(6)
+                    running = False
             manager.process_events(event)
+        if not running:
+            break
         background()
         manager.update(time_delta)
         manager.draw_ui(screen)
@@ -344,12 +347,15 @@ def option():
 def game(lvl):
     #pygame.mixer.music.load(...)
     #pygame.mixer.music.play(-1)
+    print(lvl)
     t = 300
     global_timer = 0
     x, y = 0, 0
     wall_flag = True
     wall_timer = -1
     running = True
+    Hero.hp = 5
+    globals.is_still_alive = 1
     while running:
         movement = globals.movement
         now_boss_flag = globals.now_boss_flag
@@ -425,7 +431,7 @@ def game(lvl):
                 else:
                     t += 1
 
-            if lvl == 2:
+            elif lvl == 2:
                 if not now_boss_flag:
                     if t == 500:
                         globals.now_boss_flag = True
@@ -434,7 +440,7 @@ def game(lvl):
                     elif t < 500:
                         t += 1
 
-            if lvl == 3:
+            elif lvl == 3:
                 if not now_boss_flag:
                     if t == 500:
                         globals.now_boss_flag = True
@@ -443,7 +449,7 @@ def game(lvl):
                     elif t < 500:
                         t += 1
 
-            if lvl == 4:
+            elif lvl == 4:
                 if not now_boss_flag:
                     if t == 500:
                         globals.now_boss_flag = True
@@ -452,7 +458,7 @@ def game(lvl):
                     elif t < 500:
                         t += 1
 
-            if lvl == 5:
+            elif lvl == 5:
                 if 'cline_shot' not in globals.snipers:
                     globals.snipers.append('cline_shot')
                     globals.snipers.append('sniper_shot')
@@ -471,7 +477,7 @@ def game(lvl):
                 else:
                     t += 1
 
-            if lvl == 6:
+            elif lvl == 6:
                 if not globals.cp_flag:
                     globals.cp_flag = True
                 if not now_boss_flag:
