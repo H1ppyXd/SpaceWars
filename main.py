@@ -349,6 +349,8 @@ def game(lvl):
     #pygame.mixer.music.play(-1)
     print(lvl)
     t = 300
+    globals.enemys = ['front_shot', 'triple_shot']
+    globals.snipers = ['shot']
     global_timer = 0
     x, y = 0, 0
     wall_flag = True
